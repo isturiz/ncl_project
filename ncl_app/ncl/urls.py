@@ -19,6 +19,4 @@ urlpatterns = [
     path('representative/', views.representative, name='representative'),
 
 
-    #ex: ncl/1/
-    path("<int:representative_id>/", views.detail, name="detail")
 ]

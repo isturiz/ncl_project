@@ -126,22 +126,23 @@
     <tr>
       <th scope="col" class="py-3 px-6">Nombre</th>
       <th scope="col" class="py-3 px-6">Apellido</th>
-      <th scope="col" class="py-3 px-6">Dirección</th>
-      <th scope="col" class="py-3 px-6">Teléfono</th>
       <th scope="col" class="py-3 px-6">Correo</th>
+      {% comment %}
+      <th scope="col" class="py-3 px-6">Dirección</th>
+      {% endcomment %}
+      <th scope="col" class="py-3 px-6">Teléfono</th>
       <th scope="col" class="py-3 px-6 text-center">Acción</th>
     </tr>
   </thead>
   <tbody>
+    {% if representative_list %}
+    {% for representative in representative_list %}
+
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-      <th
-        scope="row"
-        class="py-4 px-6 font-medium text-white whitespace-nowrap"
-      ></th>
-      <td class="py-4 px-6"></td>
-      <td class="py-4 px-6"></td>
-      <td class="py-4 px-6"></td>
-      <td class="py-4 px-6"></td>
+      <td class="py-4 px-6">{{representative.first_name}}</td>
+      <td class="py-4 px-6">{{representative.last_name}}</td>
+      <td class="py-4 px-6">{{representative.email}}</td>
+      <td class="py-4 px-6">{{representative.phone_number}}</td>
       <td class="py-4 px-6 text-right flex justify-between">
         <!-- Edit nuevo: oficial -->
         <button
@@ -190,6 +191,10 @@
         </button>
       </td>
     </tr>
+
+    {% endfor %} {% else %}
+    <p>No representative are available.</p>
+    {% endif %}
 
     <tr class="noSearch hide">
       <td colspan="5"></td>
