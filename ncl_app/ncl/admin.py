@@ -4,8 +4,10 @@ from .models import Representative, Student
 from .models import Teacher
 from .models import Payment
 
+
+# Las clases sirven para definir los atributos que se mostrarán en locahost/8000/admin/
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number', 'email', 'representative')
+    list_display = ('first_name', 'last_name', 'phone_number', 'email', 'representative', 'age_category')
 
 class TeacherAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'phone_number', 'email')

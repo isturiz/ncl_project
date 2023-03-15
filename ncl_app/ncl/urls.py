@@ -9,6 +9,7 @@ urlpatterns = [
 
     #ex: ncl/student
     path('student/', views.student, name='student'),
+    path('add-student-modal/', views.add_student_modal, name='add_student_modal'),
 
     #ex: ncl/ ESTA NO SE MUESTRA
     path('representative/', views.representative, name='representative'),
