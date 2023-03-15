@@ -33,4 +33,7 @@ def teacher(request):
     })
 
 def payment(request):
-    return render(request, 'ncl/payment/payment.html')
+    payment_list = payment.objects.all()
+    return render(request, 'ncl/payment/payment.html', {
+        "payment_list": payment_list
+    })

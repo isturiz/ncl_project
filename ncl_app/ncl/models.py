@@ -27,6 +27,9 @@ class Student(models.Model):
     age_category = models.CharField(max_length=1, choices=AGE_CATEGORIES)
     representative = models.ForeignKey(Representative, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Teacher(models.Model):
     first_name = models.CharField(max_length=100)
@@ -37,3 +40,14 @@ class Teacher(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+
+class Payment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    payment_date = models.DateField()
+    reference_number = models.CharField(max_length=50)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.TextField()
+
+    def __str__(self):
+        return f"{self.student.first_name} {self.student.last_name}: {self.amount} ({self.payment_date})"
