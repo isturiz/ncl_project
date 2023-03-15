@@ -15,8 +15,12 @@ urlpatterns = [
     #ex: ncl/student
     path('student/', views.student, name='student'),
 
-    #ex: ncl/student
+    #ex: ncl/ ESTA NO SE MUESTRA
     path('representative/', views.representative, name='representative'),
+
+
+    #ex: ncl/teacher
+    path('teacher/', views.teacher, name='teacher'),
 
 
 ]

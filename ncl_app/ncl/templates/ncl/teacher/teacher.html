@@ -7,9 +7,9 @@
       class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
-        Estudiantes totales
+        Profesores totales
       </h5>
-      <p class="font-normal text-gray-400">{{ student_list|length }}</p>
+      <p class="font-normal text-gray-400">4</p>
     </a>
 
     <div
@@ -32,7 +32,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- SEARCH AND CREATE NEW USER -->
 <div class="flex justify-between items-center pb-4 pt-8">
@@ -69,13 +68,11 @@
 
   <button
     type="button"
-    data-modal-toggle="newStudent"
+    data-modal-toggle="newUser"
     class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800"
   >
-    Nuevo estudiante
+    Nuevo profesor
   </button>
-
-  <!-- Modal toggle -->
 </div>
 
 <div
@@ -127,34 +124,32 @@
 <table class="w-full text-sm text-left text-gray-400" id="table-file">
   <thead class="text-xs uppercase bg-gray-700 text-gray-400">
     <tr>
-      <!-- <th scope="col" class="py-3 px-6">Cedula</th> -->
-      <th scope="col" class="hidden">ID</th>
       <th scope="col" class="py-3 px-6">Nombre</th>
       <th scope="col" class="py-3 px-6">Apellido</th>
-      <th scope="col" class="py-3 px-6">Teléfono</th>
       <th scope="col" class="py-3 px-6">Correo</th>
-      <th scope="col" class="py-3 px-6">Representante</th>
+      {% comment %}
+      <th scope="col" class="py-3 px-6">Dirección</th>
+      {% endcomment %}
+      <th scope="col" class="py-3 px-6">Teléfono</th>
       <th scope="col" class="py-3 px-6 text-center">Acción</th>
     </tr>
   </thead>
   <tbody>
-    {% if student_list %}
-    {% for student in student_list %}
+    {% if teacher_list %}
+    {% for teacher in teacher_list %}
 
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-      <td class="py-4 px-6">{{student.first_name}}</td>
-      <td class="py-4 px-6">{{student.last_name}}</td>
-      <td class="py-4 px-6">{{student.phone_number}}</td>
-      <td class="py-4 px-6">{{student.email}}</td>
-      <td class="py-4 px-6">{{student.representative.first_name}} {{student.representative.last_name}}</td>
-      <td class=""></td>
-      <td class="py-4 px-6 rounded-r-xl">
+      <td class="py-4 px-6">{{teacher.first_name}}</td>
+      <td class="py-4 px-6">{{teacher.last_name}}</td>
+      <td class="py-4 px-6">{{teacher.email}}</td>
+      <td class="py-4 px-6">{{teacher.phone_number}}</td>
+      <td class="py-4 px-6 text-right flex justify-between">
         <!-- Edit nuevo: oficial -->
         <button
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="editStudentModal"
-          onclick="editStudent()"
+          data-modal-toggle="editUserModal"
+          onclick="editUser()"
         >
           <svg
             class="w-6 h-6"
@@ -177,8 +172,7 @@
           type="button"
           data-modal-toggle="deleteAlert"
           targetEl=""
-          onclick="deleteUser('<?php //echo ($row['cedula']) 
-                                                                                                                      ?>')"
+          onclick="deleteUser('')"
         >
           <svg
             class="w-6 h-6"
@@ -198,12 +192,10 @@
       </td>
     </tr>
 
-    {% endfor %}
-    {% else %}
-    <p>No students are available.</p>
+    {% endfor %} {% else %}
+    <p>No teacher are available.</p>
     {% endif %}
 
-    <!-- Texto de buscar -->
     <tr class="noSearch hide">
       <td colspan="5"></td>
     </tr>
