@@ -6,7 +6,7 @@ from .models import Representative, Student
 from .models import Teacher
 from .models import Payment
 
-from .forms import StudentForm
+from .forms import StudentForm, PaymentForm
 
 def index(request):
     return HttpResponse("Main page")
@@ -62,3 +62,15 @@ def payment(request):
         'payment_list': payment_list,
         'total_income': total_income
     })
+
+def add_payment_modal(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            new_paymnent = form.save()
+
+            return redirect('payment_list')
+    else:
+        form = PaymentForm()
+
+    return render(request, 'add_payment_modal.html', {'form': form})

@@ -6,22 +6,22 @@
   <div class="grid grid-cols-2 gap-x-10 w-full">
     <a href="#" class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600">
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Ingresos totales</h5>
-      <p class="font-normal text-gray-400">{{ total_income }}</p>
+      <p class="font-normal text-green-400">{{ total_income }}</p>
     </a>
 
     <div class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600">
       <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Canto</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">Canto</h5>
         <p class="font-normal text-gray-400">6 estudiantes</p>
         <p class="font-normal text-gray-400">$90</p>
       </a>
       <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Piano</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">Piano</h5>
         <p class="font-normal text-gray-400">10 estudiantes</p>
         <p class="font-normal text-gray-400">$130</p>
       </a>
       <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Cuatro</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">Cuatro</h5>
         <p class="font-normal text-gray-400">4 estudiantes</p>
         <p class="font-normal text-gray-400">$80</p>
       </a>
@@ -50,7 +50,7 @@
   </div>
 
 
-  <button type="button" data-modal-toggle="newUser" class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800">Registrar pago</button>
+  <button type="button" data-modal-toggle="newPayment" class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800">Registrar pago</button>
 </div>
 
 <div class="p-4 mb-4 rounded-lg bg-blue-200 hidden changeAlert" id="alertUser" role="alert">
@@ -93,7 +93,7 @@
       <td class="py-4 px-6 text-right flex justify-between">
 
         <!-- Edit nuevo: oficial -->
-        <button class="text-white-500 editButton" type="button" data-modal-toggle="editUserModal" onclick="editUser()">
+        <button class="text-white-500 editButton" type="button" data-modal-toggle="newPayment" onclick="editUser()">
 
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
@@ -118,4 +118,5 @@
   </tbody>
 </table>
 
+{% include 'ncl/payment/add_payment_modal.html' %}
 {% endblock %}

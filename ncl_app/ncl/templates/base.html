@@ -113,7 +113,6 @@
       </nav>
     </header>
 
-
     {% comment %} Main {% endcomment %}
     <div class="flex flex-col min-h-screen">
       {% comment %} Aquí va el aside {% endcomment %}
@@ -149,8 +148,21 @@
                 href="{% url 'student' %}"
                 class="flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700"
               >
-                <img src="https://img.icons8.com/ios-glyphs/30/9ca3af/student-center.png"/>
+                <img
+                  src="https://img.icons8.com/ios-glyphs/30/9ca3af/student-center.png"
+                />
                 <span class="ml-3">Estudiantes</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{% url 'representative' %}"
+                class="flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700"
+              >
+                <img
+                  src="https://img.icons8.com/ios-glyphs/30/9ca3af/parent-guardian.png"
+                />
+                <span class="ml-3">Representante</span>
               </a>
             </li>
             <li>
@@ -158,7 +170,9 @@
                 href="{% url 'teacher' %}"
                 class="flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700"
               >
-                <img src="https://img.icons8.com/ios-filled/30/9ca3af/teacher.png"/>
+                <img
+                  src="https://img.icons8.com/ios-filled/30/9ca3af/teacher.png"
+                />
                 <span class="ml-3">Profesores</span>
               </a>
             </li>
@@ -167,14 +181,15 @@
                 href="{% url 'payment' %}"
                 class="flex items-center p-2 text-base font-normal rounded-lg text-white hover:bg-gray-700"
               >
-                <img src="https://img.icons8.com/external-creatype-glyph-colourcreatype/30/9ca3af/external-dolar-miscellaneous-user-interface-v2-creatype-glyph-colourcreatype.png"/>
+                <img
+                  src="https://img.icons8.com/external-creatype-glyph-colourcreatype/30/9ca3af/external-dolar-miscellaneous-user-interface-v2-creatype-glyph-colourcreatype.png"
+                />
                 <span class="ml-3">Pagos</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
-
 
       <!-- ========== MAIN ========== -->
       <div class="relative w-full px-20 py-12 min-h-screen pt-24 bg-gray-700">
@@ -183,6 +198,97 @@
         </main>
       </div>
     </div>
+
+    {% comment %} {% include 'static/ncl/js/validaciones.js' %} {% endcomment %}
+
+    <script>
+      function validarLetras(id) {
+        let inputId = document.getElementById(id);
+        let valueInput = inputId.value;
+        let regex = /[^a-zA-Z]/g;
+        if (valueInput.match(regex)) {
+          inputId.value = valueInput.replace(regex, "");
+          alert("Este campo solo puede contener letras.");
+        }
+      }
+
+      function validarNumeros(id) {
+        let input = document.getElementById(id);
+        input.addEventListener("keypress", function (event) {
+          if (event.which < 48 || event.which > 57) {
+            if (event.which != 13) {
+              // Comprobar si la tecla presionada es Enter
+              event.preventDefault();
+              alert("Este campo solo puede contener números.");
+            }
+          }
+        });
+      }
+
+      function doSearch() {
+        const tableReg = document.getElementById("table-file");
+        const searchText = document
+          .getElementById("table-search")
+          .value.toLowerCase();
+        let total = 0;
+
+        // Recorremos todas las filas con contenido de la tabla
+        for (let i = 1; i < tableReg.rows.length; i++) {
+          // Si el td tiene la clase "noSearch" no se busca en su contenido
+          if (tableReg.rows[i].classList.contains("noSearch")) {
+            continue;
+          }
+
+          let found = false;
+          const cellsOfRow = tableReg.rows[i].getElementsByTagName("td");
+
+          // Recorremos todas las celdas
+          for (let j = 0; j < cellsOfRow.length && !found; j++) {
+            const compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+
+            // Buscamos el texto en el contenido de la celda
+            if (
+              searchText.length == 0 ||
+              compareWith.indexOf(searchText) > -1
+            ) {
+              found = true;
+              total++;
+            }
+          }
+
+          if (found) {
+            tableReg.rows[i].style.display = "";
+          } else {
+            // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = "none";
+          }
+        }
+
+        // mostramos las coincidencias
+        const lastTR = tableReg.rows[tableReg.rows.length - 1];
+        const td = lastTR.querySelector("td");
+        lastTR.classList.remove("hide", "text-red-500");
+
+        if (searchText == "") {
+          lastTR.classList.add("hide");
+          td.innerHTML = "";
+        } else if (total) {
+          td.innerHTML =
+            "Se ha encontrado " +
+            total +
+            " coincidencia" +
+            (total > 1 ? "s" : "");
+        } else {
+          lastTR.classList.add("text-red-500");
+          td.innerHTML = "No se han encontrado coincidencias";
+        }
+      }
+
+      function validateDate(id) {
+        let fechaActual = new Date().toISOString().split("T")[0];
+        document.getElementById(id).max = fechaActual;
+      }
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/flowbite.min.js"></script>
   </body>

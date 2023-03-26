@@ -16,15 +16,15 @@
       class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Canto</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">Canto</h5>
         <p class="font-normal text-gray-400">1 profesor</p>
       </a>
       <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Piano</h5>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">Piano</h5>
         <p class="font-normal text-gray-400">2 profesores</p>
       </a>
       <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
           Cuatro
         </h5>
         <p class="font-normal text-gray-400">1 profesor</p>
@@ -68,7 +68,7 @@
 
   <button
     type="button"
-    data-modal-toggle="newUser"
+    data-modal-toggle="newTeacher"
     class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800"
   >
     Nuevo profesor
@@ -201,5 +201,7 @@
     </tr>
   </tbody>
 </table>
+
+{% include 'ncl/teacher/add_teacher_modal.html' %}
 
 {% endblock %}

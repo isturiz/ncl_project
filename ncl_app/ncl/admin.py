@@ -1,22 +1,27 @@
 from django.contrib import admin
+from .models import Student, Representative, Course, Teacher, Payment, Inscription
 
-from .models import Representative, Student
-from .models import Teacher
-from .models import Payment
-
-
-# Las clases sirven para definir los atributos que se mostrarán en locahost/8000/admin/
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number', 'email', 'representative', 'age_category')
+    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'birthdate', 'age_category', 'representative')
+
+class RepresentativeAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'phone_number')
+
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number', 'email')
-
+    list_display = ('first_name', 'last_name', 'email', 'phone_number')
 
 class PaymentAdmin(admin.ModelAdmin):
     list_display = ('student', 'payment_date', 'reference_number', 'amount', 'description')
 
-admin.site.register(Representative)
+class InscriptionAdmin(admin.ModelAdmin):
+    list_display = ('student', 'course')
+
 admin.site.register(Student, StudentAdmin)
+admin.site.register(Representative, RepresentativeAdmin)
+admin.site.register(Course, CourseAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(Inscription, InscriptionAdmin)

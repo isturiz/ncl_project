@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
-
+{% extends 'base.html' %} {% block content %}
 
 <div class="grid fr gap-y-10 content-center justify-items-center">
   <div class="grid grid-cols-2 gap-x-10 w-full">
@@ -18,23 +16,26 @@
       class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Canto</h5>
-        <p class="font-normal text-gray-400">1 profesor</p>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">
+          Canto
+        </h5>
+        <p class="font-normal text-gray-400">1 estudiantes</p>
       </a>
       <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Piano</h5>
-        <p class="font-normal text-gray-400">2 profesores</p>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">
+          Piano
+        </h5>
+        <p class="font-normal text-gray-400">2 estudiantes</p>
       </a>
       <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
           Cuatro
         </h5>
-        <p class="font-normal text-gray-400">1 profesor</p>
+        <p class="font-normal text-gray-400">1 estudiantes</p>
       </a>
     </div>
   </div>
 </div>
-
 
 <!-- SEARCH AND CREATE NEW USER -->
 <div class="flex justify-between items-center pb-4 pt-8">
@@ -69,12 +70,23 @@
     </div>
   </div>
 
-  <button
-    type="button"
-    data-modal-toggle="newStudent"
-    class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800">
-    Nuevo estudiante
-  </button>
+  <div class="flex gap-x-3">
+    <a
+      href="#3"
+      type="button"
+      class="text-white tracking-tight focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-green-800"
+    >
+      Nuevo  representante
+    </a>
+
+    <button
+      type="button"
+      data-modal-toggle="newStudent"
+      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
+    >
+      Nuevo estudiante
+    </button>
+  </div>
 
   <!-- Modal toggle -->
 </div>
@@ -138,15 +150,17 @@
     </tr>
   </thead>
   <tbody>
-    {% if student_list %}
-    {% for student in student_list %}
+    {% if student_list %} {% for student in student_list %}
 
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
       <td class="py-4 px-6">{{student.first_name}}</td>
       <td class="py-4 px-6">{{student.last_name}}</td>
       <td class="py-4 px-6">{{student.phone_number}}</td>
       <td class="py-4 px-6">{{student.email}}</td>
-      <td class="py-4 px-6">{{student.representative.first_name}} {{student.representative.last_name}}</td>
+      <td class="py-4 px-6">
+        {{student.representative.first_name}}
+        {{student.representative.last_name}}
+      </td>
       <td class="py-4 px-6 rounded-r-xl">
         <!-- Edit nuevo: oficial -->
         <button
@@ -197,8 +211,7 @@
       </td>
     </tr>
 
-    {% endfor %}
-    {% else %}
+    {% endfor %} {% else %}
     <p>No students are available.</p>
     {% endif %}
 
@@ -209,5 +222,4 @@
   </tbody>
 </table>
 
-{% include 'ncl/student/add_student_modal.html' %}
-{% endblock %}
+{% include 'ncl/student/add_student_modal.html' %} {% endblock %}
