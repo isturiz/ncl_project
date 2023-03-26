@@ -9,7 +9,6 @@ urlpatterns = [
 
     #ex: ncl/student
     path('student/', views.student, name='student'),
-    path('add-student-modal/', views.add_student_modal, name='add_student_modal'),
 
     #ex: ncl/representative
     path('representative/', views.representative, name='representative'),
@@ -20,6 +19,5 @@ urlpatterns = [
 
     #ex: ncl/payment
     path('payment/', views.payment, name='payment'),
-    path('add-payment-modal/', views.add_payment_modal, name='add_payment_modal'),
 
 ]

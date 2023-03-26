@@ -8,16 +8,13 @@ class Representative(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+class AgeCategory(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
-
-    AGE_CATEGORIES = (
-        ('A', '1 a 3 años de edad'),
-        ('B', '4 a 6 años de edad'),
-        ('C', '7 a 9 años de edad'),
-        ('D', '10 a 12 años de edad'),
-        ('E', 'Adolescente'),
-    )
-
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -25,8 +22,8 @@ class Student(models.Model):
     address = models.CharField(max_length=200)
     phone_number = models.CharField(max_length=20)
     birthdate = models.DateField()
-    age_category = models.CharField(max_length=1, choices=AGE_CATEGORIES)
-    representative = models.ForeignKey(Representative, on_delete=models.CASCADE)
+    age_category = models.ForeignKey(AgeCategory, on_delete=models.CASCADE)
+    representative = models.ForeignKey(Representative, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -36,7 +33,7 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class Teacher(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
