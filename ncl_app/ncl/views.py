@@ -8,7 +8,7 @@ from .models import Teacher
 from .models import Payment
 from .models import Course
 
-from .forms import StudentForm, RepresentativeForm, CourseForm
+from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm
 
 def index(request):
     return HttpResponse("Main page")
@@ -63,6 +63,16 @@ def teacher(request):
     return render(request, 'ncl/teacher/teacher.html', {
         'teacher_list': teacher_list
     })
+
+def add_teacher(request):
+    if request.method == 'POST':
+        form = TeacherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('teacher')
+    else:
+        form = RepresentativeForm()
+    return render(request, 'add_teacher.html', {'form': form})
 
 def payment(request):
     payment_list = Payment.objects.all()

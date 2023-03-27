@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import home, student, representative, teacher, payment, course
-from .views import add_student, add_representative, add_course
+from .views import add_student, add_representative, add_course, add_teacher
 
 urlpatterns = [
 
@@ -19,6 +19,7 @@ urlpatterns = [
 
     #ex: ncl/teacher
     path('teacher/', teacher, name='teacher'),
+    path('add-teacher/', add_teacher, name='add_teacher'),
 
     #ex: ncl/payment
     path('payment/', payment, name='payment'),
