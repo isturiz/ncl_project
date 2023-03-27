@@ -7,36 +7,33 @@
       class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
-        Estudiantes totales
+        Profesores totales
       </h5>
-      <p class="font-normal text-gray-400">{{ student_list|length }}</p>
+      <p class="font-normal text-gray-400">4</p>
     </a>
 
     <div
       class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">
-          Canto
-        </h5>
-        <p class="font-normal text-gray-400">1 estudiantes</p>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Canto</h5>
+        <p class="font-normal text-gray-400">1 profesor</p>
       </a>
       <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">
-          Piano
-        </h5>
-        <p class="font-normal text-gray-400">2 estudiantes</p>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Piano</h5>
+        <p class="font-normal text-gray-400">2 profesores</p>
       </a>
       <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
           Cuatro
         </h5>
-        <p class="font-normal text-gray-400">1 estudiantes</p>
+        <p class="font-normal text-gray-400">1 profesor</p>
       </a>
     </div>
   </div>
 </div>
 
+<!-- SEARCH AND CREATE NEW USER -->
 <div class="flex justify-between items-center pb-4 pt-8">
   <div class="flex justify-between items-center gap-2">
     <!-- Search -->
@@ -69,25 +66,33 @@
     </div>
   </div>
 
-  <div class="flex gap-x-3">
-    <button
-      type="button"
-      data-modal-toggle="addRepresentative"
-      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
-    >
-      Nuevo representante
-    </button>
+  <form action="{% url 'add_course' %}" method="POST" class="flex gap-3">
+    {% csrf_token %}
+
+    <div class="col-span-6 sm:col-span-3">
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-400 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Nuevo curso"
+        value=""
+        pattern="[A-Za-z]+"
+        oninput="validarLetras('name')"
+        maxlength="50"
+        required
+      />
+    </div>
 
     <button
-      type="button"
-      data-modal-toggle="addStudent"
-      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
+      type="submit"
+      onclick="showAlert()"
+      name="register"
+      class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
     >
-      Nuevo estudiante
+      Registrar
     </button>
-  </div>
-
-  <!-- Modal toggle -->
+  </form>
 </div>
 
 <div
@@ -136,39 +141,25 @@
   </button>
 </div>
 
-
-
 <table class="w-full text-sm text-left text-gray-400" id="table-file">
   <thead class="text-xs uppercase bg-gray-700 text-gray-400">
     <tr>
-      <!-- <th scope="col" class="py-3 px-6">Cedula</th> -->
       <th scope="col" class="py-3 px-6">Nombre</th>
-      <th scope="col" class="py-3 px-6">Apellido</th>
-      <th scope="col" class="py-3 px-6">Teléfono</th>
-      <th scope="col" class="py-3 px-6">Correo</th>
-      <th scope="col" class="py-3 px-6">Representante</th>
-      <th scope="col" class="py-3 px-6 text-center">Acción</th>
+      <th scope="col" class="py-3 px-6 text-right">Acción</th>
     </tr>
   </thead>
   <tbody>
-    {% if student_list %} {% for student in student_list %}
+    {% if course_list %} {% for course in course_list %}
 
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-      <td class="py-4 px-6 rounded-l-xl">{{student.first_name}}</td>
-      <td class="py-4 px-6">{{student.last_name}}</td>
-      <td class="py-4 px-6">{{student.phone_number}}</td>
-      <td class="py-4 px-6">{{student.email}}</td>
-      <td class="py-4 px-6">
-        {{student.representative.first_name}}
-        {{student.representative.last_name}}
-      </td>
-      <td class="py-4 px-6 rounded-r-xl">
+      <td class="py-4 px-6">{{course.name}}</td>
+      <td class="py-4 px-6 flex gap-3 float-right">
         <!-- Edit nuevo: oficial -->
         <button
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="editStudentModal"
-          onclick="editStudent()"
+          data-modal-toggle="editUserModal"
+          onclick="editUser()"
         >
           <svg
             class="w-6 h-6"
@@ -191,8 +182,7 @@
           type="button"
           data-modal-toggle="deleteAlert"
           targetEl=""
-          onclick="deleteUser('<?php //echo ($row['cedula']) 
-                                                                                                                      ?>')"
+          onclick="deleteUser('')"
         >
           <svg
             class="w-6 h-6"
@@ -213,16 +203,13 @@
     </tr>
 
     {% endfor %} {% else %}
-    <p>No students are available.</p>
+    <p>No representative are available.</p>
     {% endif %}
 
-    <!-- Texto de buscar -->
     <tr class="noSearch hide">
       <td colspan="5"></td>
     </tr>
   </tbody>
 </table>
 
-{% include 'ncl/student/add_student.html' %} 
-{% include 'ncl/representative/add_representative.html' %} 
 {% endblock %}

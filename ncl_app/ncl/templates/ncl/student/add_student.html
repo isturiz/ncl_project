@@ -1,6 +1,6 @@
 <!-- Edit user modal -->
 <div
-  id="newStudent"
+  id="addStudent"
   tabindex="-1"
   aria-hidden="true"
   class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
@@ -8,10 +8,11 @@
   <div class="relative w-full max-w-2xl h-full md:h-auto">
     <!-- Modal content -->
     <form
-      action=""
+      action="{% url 'add_student' %}"
       method="POST"
       class="relative rounded-lg shadow bg-gray-700"
     >
+    {% csrf_token %}
       <!-- Modal header -->
       <div
         class="flex justify-between items-start p-4 rounded-t border-b border-gray-600"
@@ -21,7 +22,7 @@
         <button
           type="button"
           class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
-          data-modal-toggle="newStudent"
+          data-modal-toggle="addStudent"
         >
           <svg
             class="w-5 h-5"
@@ -155,27 +156,16 @@
             >
             <select
               name="age_category"
-              class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               required
             >
-              <option value="A">3 a 5 años</option>
-              <option value="B">6 a 9 años</option>
-              <option value="C">10 a 12 años</option>
-            </select>
-          </div>
-          
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2" for="age_category"
-              >Categoría de edad</label
-            >
-            <select
-              id="age_category"
-              name="age_category"
-              class="form-select px-3 py-2 rounded-lg text-gray-800 border-gray-400 focus:border-blue-500 focus:outline-none focus:shadow-outline-blue"
-            >
-              {% for value, label in form.age_category.field.choices %}
-              <option value="{{ value }}">{{ label }}</option>
-              {% endfor %}
+              {% if age_category %}
+              {% for category in age_category %}
+
+              <option value="{{category.id}}">{{category.name}}</option>
+            
+              {% endfor %} 
+              {% endif %}
             </select>
           </div>
 
@@ -187,14 +177,18 @@
             >
             <select
               name="representative"
-              class="bg-gray-50 border text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              required
+              class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              
             >
-              {% for representative in representatives %}
-              <option value="{{ representative.id }}">
-                {{ representative }}
-              </option>
-              {% endfor %}
+              <option value="">-- Ninguno --</option>
+
+              {% if representative_list %}
+              {% for representative in representative_list %}
+
+              <option value="{{representative.id}}">{{representative.first_name}} {{representative.last_name}}</option>
+            
+              {% endfor %} 
+              {% endif %}
             </select>
           </div>
         </div>
@@ -210,7 +204,7 @@
           name="register"
           class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
         >
-          Registrar usuario
+          Registrar
         </button>
       </div>
     </form>

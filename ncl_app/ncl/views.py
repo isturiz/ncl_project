@@ -3,9 +3,12 @@ from django.http import HttpResponse
 from django.db.models import Sum
 
 from .models import Representative, Student
+from .models import AgeCategory
 from .models import Teacher
 from .models import Payment
+from .models import Course
 
+from .forms import StudentForm, RepresentativeForm, CourseForm
 
 def index(request):
     return HttpResponse("Main page")
@@ -20,9 +23,23 @@ def home(request):
 
 def student(request):
     student_list = Student.objects.all()
+    representative_list = Representative.objects.all()
+    age_category = AgeCategory.objects.all()
     return render(request, 'ncl/student/student.html', {
-        'student_list': student_list
+        'student_list': student_list,
+        'representative_list': representative_list,
+        'age_category': age_category
     })
+
+def add_student(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student')
+    else:
+        form = StudentForm()
+    return render(request, 'add_student.html', {'form': form})
 
 
 def representative(request):
@@ -30,6 +47,16 @@ def representative(request):
     return render(request, 'ncl/representative/representative.html', {
         'representative_list': representative_list
     })
+
+def add_representative(request):
+    if request.method == 'POST':
+        form = RepresentativeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('representative')
+    else:
+        form = RepresentativeForm()
+    return render(request, 'add_representative.html', {'form': form})
 
 def teacher(request):
     teacher_list = Teacher.objects.all()
@@ -45,3 +72,18 @@ def payment(request):
         'total_income': total_income
     })
 
+def course(request):
+    course_list = Course.objects.all()
+    return render(request, 'ncl/course/course.html', {
+        'course_list': course_list
+    })
+
+def add_course(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('course')
+    else:
+        form = CourseForm()
+    return render(request, 'course.html', {'form': form})

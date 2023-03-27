@@ -1,23 +1,30 @@
 from django.urls import path
 
-from . import views
+from .views import home, student, representative, teacher, payment, course
+from .views import add_student, add_representative, add_course
 
 urlpatterns = [
 
     #ex: ncl/
-    path('', views.home, name='home'),
+    path('', home, name='home'),
 
     #ex: ncl/student
-    path('student/', views.student, name='student'),
+    path('student/', student, name='student'),
+
+    path('add-student/', add_student, name='add_student'),
 
     #ex: ncl/representative
-    path('representative/', views.representative, name='representative'),
-
+    path('representative/', representative, name='representative'),
+    path('add-representative/', add_representative, name='add_representative'),
 
     #ex: ncl/teacher
-    path('teacher/', views.teacher, name='teacher'),
+    path('teacher/', teacher, name='teacher'),
 
     #ex: ncl/payment
-    path('payment/', views.payment, name='payment'),
+    path('payment/', payment, name='payment'),
+
+    path('course/', course, name='course'),
+    path('add-course/', add_course, name='add_course'),
+
 
 ]

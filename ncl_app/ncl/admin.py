@@ -8,7 +8,7 @@ class StudentAdmin(admin.ModelAdmin):
     # list_display = ('name')
 
 class RepresentativeAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'phone_number')
+    list_display = ('first_name', 'last_name', 'email', 'phone_number')
 
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name',)
