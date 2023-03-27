@@ -7,9 +7,9 @@
       class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
     >
       <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
-        Ingresos totales
+        Estudiantes totales
       </h5>
-      <p class="font-normal text-green-400">{{ total_income }}</p>
+      <p class="font-normal text-gray-400">{{ student_list|length }}</p>
     </a>
 
     <div
@@ -19,28 +19,24 @@
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">
           Canto
         </h5>
-        <p class="font-normal text-gray-400">6 estudiantes</p>
-        <p class="font-normal text-gray-400">$90</p>
+        <p class="font-normal text-gray-400">1 estudiantes</p>
       </a>
       <a href="#2">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">
           Piano
         </h5>
-        <p class="font-normal text-gray-400">10 estudiantes</p>
-        <p class="font-normal text-gray-400">$130</p>
+        <p class="font-normal text-gray-400">2 estudiantes</p>
       </a>
       <a href="#3">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
           Cuatro
         </h5>
-        <p class="font-normal text-gray-400">4 estudiantes</p>
-        <p class="font-normal text-gray-400">$80</p>
+        <p class="font-normal text-gray-400">1 estudiantes</p>
       </a>
     </div>
   </div>
 </div>
 
-<!-- SEARCH AND CREATE NEW USER -->
 <div class="flex justify-between items-center pb-4 pt-8">
   <div class="flex justify-between items-center gap-2">
     <!-- Search -->
@@ -73,13 +69,17 @@
     </div>
   </div>
 
-  <button
-    type="button"
-    data-modal-toggle="addPayment"
-    class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-green-800"
-  >
-    Añadir pago
-  </button>
+  <div class="flex gap-x-3">
+    <button
+      type="button"
+      data-modal-toggle="addInscription"
+      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
+    >
+      Nuevo inscripción
+    </button>
+  </div>
+
+  <!-- Modal toggle -->
 </div>
 
 <div
@@ -131,36 +131,29 @@
 <table class="w-full text-sm text-left text-gray-400" id="table-file">
   <thead class="text-xs uppercase bg-gray-700 text-gray-400">
     <tr>
+      <!-- <th scope="col" class="py-3 px-6">Cedula</th> -->
       <th scope="col" class="py-3 px-6">Estudiante</th>
-      <th scope="col" class="py-3 px-6">Fecha</th>
-      <th scope="col" class="py-3 px-6">Referencia</th>
-      <th scope="col" class="py-3 px-6">Monto</th>
-      <th scope="col" class="py-3 px-6">Descripción</th>
-      <th scope="col" class="py-3 px-6">Cursos</th>
+      <th scope="col" class="py-3 px-6">Curso</th>
       <th scope="col" class="py-3 px-6 text-center">Acción</th>
     </tr>
   </thead>
   <tbody>
-    {% if payment_list %} {% for payment in payment_list %}
+    {% if inscription_list %} {% for inscription in inscription_list %}
 
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-      <td class="py-4 px-6">
-        {{payment.student.first_name}} {{payment.student.last_name}}
+      <td class="py-4 px-6 rounded-l-xl">
+        {{inscription.student.first_name}} {{inscription.student.last_name}}
       </td>
-      <td class="py-4 px-6">{{payment.payment_date}}</td>
-      <td class="py-4 px-6">{{payment.reference_number}}</td>
-      <td class="py-4 px-6">{{payment.amount}}</td>
-      <td class="py-4 px-6">{{payment.description}}</td>
       <td class="py-4 px-6">
-        {% for course in payment.course.all %} {{ course.name }} {% if not forloop.last %}, {% endif %} {% endfor%}
+        {% for course in inscription.course.all %} {{ course.name }} {% if not forloop.last %}, {% endif %} {% endfor%}
       </td>
-      <td class="py-4 px-6 text-right flex justify-between">
+      <td class="py-4 px-6 rounded-r-xl">
         <!-- Edit nuevo: oficial -->
         <button
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="newPayment"
-          onclick="editUser()"
+          data-modal-toggle="editStudentModal"
+          onclick="editStudent()"
         >
           <svg
             class="w-6 h-6"
@@ -183,7 +176,8 @@
           type="button"
           data-modal-toggle="deleteAlert"
           targetEl=""
-          onclick="deleteUser('')"
+          onclick="deleteUser('<?php //echo ($row['cedula']) 
+                                                                                                                      ?>')"
         >
           <svg
             class="w-6 h-6"
@@ -202,14 +196,16 @@
         </button>
       </td>
     </tr>
+
     {% endfor %} {% else %}
-    <p>No payments are available.</p>
+    <p>No students are available.</p>
     {% endif %}
 
+    <!-- Texto de buscar -->
     <tr class="noSearch hide">
       <td colspan="5"></td>
     </tr>
   </tbody>
 </table>
 
-{% include 'ncl/payment/add_payment.html' %} {% endblock %}
+{% include 'ncl/inscription/add_inscription.html' %} {% endblock %}

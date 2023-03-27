@@ -60,7 +60,7 @@ class Payment(models.Model):
 
 class Inscription(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, default=None)
+    course = models.ManyToManyField(Course)
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.course.name}"

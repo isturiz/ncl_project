@@ -7,8 +7,9 @@ from .models import AgeCategory
 from .models import Teacher
 from .models import Payment
 from .models import Course
+from .models import Inscription
 
-from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm
+from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm, InscriptionForm, PaymentForm
 
 def index(request):
     return HttpResponse("Main page")
@@ -77,10 +78,26 @@ def add_teacher(request):
 def payment(request):
     payment_list = Payment.objects.all()
     total_income = payment_list.aggregate(Sum('amount'))['amount__sum']
+    course_list = Course.objects.all()
+    student_list = Student.objects.all()
+
     return render(request, 'ncl/payment/payment.html', {
         'payment_list': payment_list,
-        'total_income': total_income
+        'total_income': total_income,
+        'course_list': course_list,
+        'student_list': student_list
     })
+
+def add_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment')
+    else:
+        form = PaymentForm()
+    return render(request, 'payment.html', {'form': form})
+
 
 def course(request):
     course_list = Course.objects.all()
@@ -97,3 +114,25 @@ def add_course(request):
     else:
         form = CourseForm()
     return render(request, 'course.html', {'form': form})
+
+
+def inscription(request):
+    inscription_list = Inscription.objects.all()
+    student_list = Student.objects.all()
+    course_list = Course.objects.all()
+
+    return render(request, 'ncl/inscription/inscription.html', {
+        'inscription_list': inscription_list,
+        'student_list': student_list,
+        'course_list': course_list,
+    })
+
+def add_inscription(request):
+    if request.method == 'POST':
+        form = InscriptionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('inscription')
+    else:
+        form = InscriptionForm()
+    return render(request, 'inscription.html', {'form': form})

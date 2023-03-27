@@ -1,6 +1,6 @@
 <!-- Edit user modal -->
 <div
-  id="addPayment"
+  id="addInscription"
   tabindex="-1"
   aria-hidden="true"
   class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
@@ -8,7 +8,7 @@
   <div class="relative w-full max-w-2xl h-full md:h-auto">
     <!-- Modal content -->
     <form
-      action="{% url 'add_payment' %}"
+      action="{% url 'add_inscription' %}"
       method="POST"
       class="relative rounded-lg shadow bg-gray-700"
     >
@@ -17,12 +17,12 @@
       <div
         class="flex justify-between items-start p-4 rounded-t border-b border-gray-600"
       >
-        <h3 class="text-xl font-semibold text-white">Registrar estudiante</h3>
+        <h3 class="text-xl font-semibold text-white">Registrar inscripción</h3>
 
         <button
           type="button"
           class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
-          data-modal-toggle="addPayment"
+          data-modal-toggle="addInscription"
         >
           <svg
             class="w-5 h-5"
@@ -41,15 +41,17 @@
       <!-- Modal body -->
       <div class="p-6 space-y-6">
         <div class="grid grid-cols-6 gap-6">
+          
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="student"
+              for="age_category"
               class="block mb-2 text-sm font-medium text-white"
-              >Estudiante</label
+              >Categoría de edad</label
             >
             <select
               name="student"
               class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              required
             >
               {% if student_list %}
               {% for student in student_list %}
@@ -63,81 +65,9 @@
 
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="payment_date"
+              for="representative"
               class="block mb-2 text-sm font-medium text-white"
-              >Fecha del pago</label
-            >
-            <input
-              type="date"
-              name="payment_date"
-              id="payment_date"
-              class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              oninput="validateDate('payment_date')"
-              placeholder="123456678"
-              value=""
-              required
-            />
-          </div>
-
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="reference_number"
-              class="block mb-2 text-sm font-medium text-white"
-              >Número de referencia</label
-            >
-            <input
-              type="text"
-              name="reference_number"
-              id="reference_number"
-              class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="123456678"
-              value=""
-              oninput="validarNumeros('reference_number')"
-              required
-            />
-          </div>
-
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="amount"
-              class="block mb-2 text-sm font-medium text-white"
-              >Monto</label
-            >
-            <input
-              type="text"
-              name="amount"
-              id="amount"
-              class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="$50"
-              value=""
-              oninput="validarNumeros('amount')"
-              required
-            />
-          </div>
-
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="description"
-              class="block mb-2 text-sm font-medium text-white"
-              >Descripción</label
-            >
-            <input
-              type="text"
-              name="description"
-              id="description"
-              class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Pago de la mensualidad de Marzo"
-              value=""
-              required
-            />
-          </div>
-
-
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="course"
-              class="block mb-2 text-sm font-medium text-white"
-              >Curso</label
+              >Cursos</label
             >
             <select
               name="course"
@@ -153,8 +83,6 @@
               {% endif %}
             </select>
           </div>
-          
-          
         </div>
       </div>
 
