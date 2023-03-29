@@ -154,8 +154,8 @@
       <td class="py-4 px-6">{{representative.email}}</td>
       <td class="py-4 px-6">{{representative.phone_number}}</td>
       <td class="py-4 px-6 text-right flex justify-between">
-        <!-- Edit nuevo: oficial -->
-        <button
+        <a href="{% url 'delete_representative' representative.id %}">Eliminar</a>
+        {% comment %} <button
           class="text-white-500 editButton"
           type="button"
           data-modal-toggle="editUserModal"
@@ -175,7 +175,7 @@
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </button> {% endcomment %}
 
         <button
           class="text-red-500"
@@ -211,5 +211,51 @@
     </tr>
   </tbody>
 </table>
+<button class="delete-btn" data-representative-id="{{representative.id}}">Eliminar</button>
+
+<!-- Modal -->
+<div class="modal" id="deleteAlert">
+  <div class="modal-content">
+    <h3>¿Estás seguro de que deseas eliminar este representante?</h3>
+    <div class="modal-buttons">
+      <button class="cancel-btn">Cancelar</button>
+      <button class="confirm-btn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Obtenemos todos los botones de eliminar
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+
+  // Agregamos un event listener a cada botón de eliminar
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const representativeId = event.target.dataset.representativeId;
+
+      // Mostramos el modal de confirmación
+      const modal = document.getElementById('deleteAlert');
+      modal.style.display = 'block';
+
+      // Agregamos event listeners a los botones del modal
+      const cancelBtn = modal.querySelector('.cancel-btn');
+      const confirmBtn = modal.querySelector('.confirm-btn');
+
+      // Al hacer clic en el botón "Cancelar", cerramos el modal
+      cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      // Al hacer clic en el botón "Eliminar", eliminamos al representante
+      confirmBtn.addEventListener('click', () => {
+        // Aquí debemos agregar el código para eliminar al representante
+        modal.style.display = 'none';
+      });
+    });
+  });
+</script>
+
+
 {% include 'ncl/student/add_student.html' %}
+{% comment %} {% include 'ncl/others/delete_alert.html' %} {% endcomment %}
 {% include 'ncl/representative/add_representative.html' %} {% endblock %}

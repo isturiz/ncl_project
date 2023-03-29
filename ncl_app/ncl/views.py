@@ -22,6 +22,29 @@ def home(request):
         'total_income': total_income
     })
 
+# Representative Views
+def representative(request):
+    representative_list = Representative.objects.all()
+    return render(request, 'ncl/representative/representative.html', {
+        'representative_list': representative_list
+    })
+
+def add_representative(request):
+    if request.method == 'POST':
+        form = RepresentativeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('representative')
+    else:
+        form = RepresentativeForm()
+    return render(request, 'add_representative.html', {'form': form})
+
+def delete_representative(request, representative_id):
+    representative = Representative.objects.get(id=representative_id)
+    representative.delete()
+    return redirect('representative')
+
+# Student Views
 def student(request):
     student_list = Student.objects.all()
     representative_list = Representative.objects.all()
@@ -43,22 +66,8 @@ def add_student(request):
     return render(request, 'add_student.html', {'form': form})
 
 
-def representative(request):
-    representative_list = Representative.objects.all()
-    return render(request, 'ncl/representative/representative.html', {
-        'representative_list': representative_list
-    })
 
-def add_representative(request):
-    if request.method == 'POST':
-        form = RepresentativeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('representative')
-    else:
-        form = RepresentativeForm()
-    return render(request, 'add_representative.html', {'form': form})
-
+# Teacher Views
 def teacher(request):
     teacher_list = Teacher.objects.all()
     return render(request, 'ncl/teacher/teacher.html', {
@@ -75,6 +84,7 @@ def add_teacher(request):
         form = RepresentativeForm()
     return render(request, 'add_teacher.html', {'form': form})
 
+# Payment Views
 def payment(request):
     payment_list = Payment.objects.all()
     total_income = payment_list.aggregate(Sum('amount'))['amount__sum']
@@ -98,7 +108,7 @@ def add_payment(request):
         form = PaymentForm()
     return render(request, 'payment.html', {'form': form})
 
-
+# Course Views
 def course(request):
     course_list = Course.objects.all()
     return render(request, 'ncl/course/course.html', {
@@ -116,6 +126,7 @@ def add_course(request):
     return render(request, 'course.html', {'form': form})
 
 
+# Inscription Views
 def inscription(request):
     inscription_list = Inscription.objects.all()
     student_list = Student.objects.all()
