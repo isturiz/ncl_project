@@ -130,7 +130,6 @@
     </svg>
   </button>
 </div>
-
 <table class="w-full text-sm text-left text-gray-400" id="table-file">
   <thead class="text-xs uppercase bg-gray-700 text-gray-400">
     <tr>
@@ -145,8 +144,7 @@
     </tr>
   </thead>
   <tbody>
-    {% if representative_list %}
-    {% for representative in representative_list %}
+    {% if representative_list %} {% for representative in representative_list %}
 
     <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
       <td class="py-4 px-6">{{representative.first_name}}</td>
@@ -154,13 +152,19 @@
       <td class="py-4 px-6">{{representative.email}}</td>
       <td class="py-4 px-6">{{representative.phone_number}}</td>
       <td class="py-4 px-6 text-right flex justify-between">
-        <a href="{% url 'delete_representative' representative.id %}">Eliminar</a>
-        {% comment %} <button
-          class="text-white-500 editButton"
+        <button
+          class="text-white-500 editButton edit-representative"
           type="button"
-          data-modal-toggle="editUserModal"
-          onclick="editUser()"
-        >
+          data-modal-toggle="editRepresentative"
+          data-id="{{ representative.id }}"
+          onclick="editRepresentative(
+                      '{{representative.id}}',
+                      '{{representative.first_name}}',
+                      '{{representative.last_name}}',
+                      '{{representative.email}}',
+                      '{{representative.phone_number}}',
+                      )">
+        
           <svg
             class="w-6 h-6"
             fill="none"
@@ -175,14 +179,13 @@
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button> {% endcomment %}
+        </button>
 
         <button
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          targetEl=""
-          onclick="deleteUser('')"
+          data-representative-id="{{representative.id}}"
         >
           <svg
             class="w-6 h-6"
@@ -211,51 +214,26 @@
     </tr>
   </tbody>
 </table>
-<button class="delete-btn" data-representative-id="{{representative.id}}">Eliminar</button>
-
-<!-- Modal -->
-<div class="modal" id="deleteAlert">
-  <div class="modal-content">
-    <h3>¿Estás seguro de que deseas eliminar este representante?</h3>
-    <div class="modal-buttons">
-      <button class="cancel-btn">Cancelar</button>
-      <button class="confirm-btn">Eliminar</button>
-    </div>
-  </div>
-</div>
 
 <script>
-  // Obtenemos todos los botones de eliminar
-  const deleteButtons = document.querySelectorAll('.delete-btn');
-
-  // Agregamos un event listener a cada botón de eliminar
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-      const representativeId = event.target.dataset.representativeId;
-
-      // Mostramos el modal de confirmación
-      const modal = document.getElementById('deleteAlert');
-      modal.style.display = 'block';
-
-      // Agregamos event listeners a los botones del modal
-      const cancelBtn = modal.querySelector('.cancel-btn');
-      const confirmBtn = modal.querySelector('.confirm-btn');
-
-      // Al hacer clic en el botón "Cancelar", cerramos el modal
-      cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-
-      // Al hacer clic en el botón "Eliminar", eliminamos al representante
-      confirmBtn.addEventListener('click', () => {
-        // Aquí debemos agregar el código para eliminar al representante
-        modal.style.display = 'none';
-      });
-    });
-  });
+  function editRepresentative(id, first_name, last_name, email, phone_number) {
+    const id__input = document.querySelector('#id__edit')
+    const first_name__input = document.querySelector('#first_name__edit')
+    const last_name__input = document.querySelector('#last_name__edit')
+    const email__input = document.querySelector('#email__edit')
+    const phone_number__input = document.querySelector('#phone_number__edit')
+  
+    id__input.value = id
+    first_name__input.value = first_name
+    last_name__input.value = last_name
+    email__input.value = email
+    phone_number__input.value = phone_number
+  }
+  
 </script>
 
-
+{% include 'ncl/representative/add_representative.html' %}
+{% include 'ncl/representative/edit_representative.html' %}
+{% include 'ncl/others/delete_alert.html' %}
 {% include 'ncl/student/add_student.html' %}
-{% comment %} {% include 'ncl/others/delete_alert.html' %} {% endcomment %}
-{% include 'ncl/representative/add_representative.html' %} {% endblock %}
+{% endblock %}

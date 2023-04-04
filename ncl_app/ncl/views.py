@@ -39,6 +39,25 @@ def add_representative(request):
         form = RepresentativeForm()
     return render(request, 'add_representative.html', {'form': form})
 
+def edit_representative(request):
+  if request.method == 'POST':
+    id = request.POST.get('id')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    email = request.POST.get('email')
+    phone_number = request.POST.get('phone_number')
+
+    representative = Representative.objects.get(id=id)
+    representative.first_name = first_name
+    representative.last_name = last_name
+    representative.email = email
+    representative.phone_number = phone_number
+    representative.save()
+
+    return redirect('representative')
+
+  return render(request, 'edit_representative.html')
+
 def delete_representative(request, representative_id):
     representative = Representative.objects.get(id=representative_id)
     representative.delete()
