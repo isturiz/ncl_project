@@ -66,33 +66,13 @@
     </div>
   </div>
 
-  <form action="{% url 'add_course' %}" method="POST" class="flex gap-3">
-    {% csrf_token %}
-
-    <div class="col-span-6 sm:col-span-3">
-      <input
-        type="text"
-        name="name"
-        id="name"
-        class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-400 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-        placeholder="Nuevo curso"
-        value=""
-        pattern="[A-Za-z]+"
-        oninput="validarLetras('name')"
-        maxlength="50"
-        required
-      />
-    </div>
-
-    <button
-      type="submit"
-      onclick="showAlert()"
-      name="register"
-      class="text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-green-600 hover:bg-green-700 focus:ring-green-800"
+  <button
+      type="button"
+      data-modal-toggle="addCourse"
+      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
     >
-      Registrar
+      Nuevo curso
     </button>
-  </form>
 </div>
 
 <div
@@ -164,8 +144,17 @@
         <button
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="editUserModal"
-          onclick="editUser()"
+          data-modal-toggle="editCourse"
+          data-dataInfo="{{course}}"
+          onclick="editModal({
+            id: '{{course.id}}',
+            name: '{{course.name}}',
+            teacher: [
+            {% for teacher in course.teacher.all %}
+              '{{ teacher.id }}',
+            {% endfor %}
+          ],
+          })"
         >
           <svg
             class="w-6 h-6"
@@ -187,8 +176,8 @@
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          targetEl=""
-          onclick="deleteUser('')"
+          data-id="{{course.id}}"
+          data-id-type="course"
         >
           <svg
             class="w-6 h-6"
@@ -209,7 +198,7 @@
     </tr>
 
     {% endfor %} {% else %}
-    <p>No representative are available.</p>
+    <p>No hay cursos para mostrar.</p>
     {% endif %}
 
     <tr class="noSearch hide">
@@ -217,5 +206,9 @@
     </tr>
   </tbody>
 </table>
+
+
+{% include 'ncl/course/add_course.html' %}
+{% include 'ncl/course/edit_course.html' %}
 
 {% endblock %}

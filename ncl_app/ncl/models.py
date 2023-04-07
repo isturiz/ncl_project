@@ -38,9 +38,10 @@ class Teacher(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    teacher = models.ManyToManyField(Teacher)
+    teacher = models.ManyToManyField(Teacher, blank=True, null=True)
 
     def __str__(self):
         return self.name

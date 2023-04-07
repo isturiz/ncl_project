@@ -136,9 +136,6 @@
       <th scope="col" class="py-3 px-6">Nombre</th>
       <th scope="col" class="py-3 px-6">Apellido</th>
       <th scope="col" class="py-3 px-6">Correo</th>
-      {% comment %}
-      <th scope="col" class="py-3 px-6">Dirección</th>
-      {% endcomment %}
       <th scope="col" class="py-3 px-6">Teléfono</th>
       <th scope="col" class="py-3 px-6 text-center">Acción</th>
     </tr>
@@ -156,15 +153,14 @@
           class="text-white-500 editButton edit-representative"
           type="button"
           data-modal-toggle="editRepresentative"
-          data-id="{{ representative.id }}"
-          onclick="editRepresentative(
-                      '{{representative.id}}',
-                      '{{representative.first_name}}',
-                      '{{representative.last_name}}',
-                      '{{representative.email}}',
-                      '{{representative.phone_number}}',
-                      )">
-        
+          onclick="editModal({
+            id: '{{representative.id}}',
+            first_name: '{{representative.first_name}}',
+            last_name: '{{representative.last_name}}',
+            email: '{{representative.email}}',
+            phone_number: '{{representative.phone_number}}',
+          })"
+        >
           <svg
             class="w-6 h-6"
             fill="none"
@@ -185,7 +181,9 @@
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          data-representative-id="{{representative.id}}"
+          data-id="{{representative.id}}"
+          data-element="{{representative}}"
+          data-id-type="representative"
         >
           <svg
             class="w-6 h-6"
@@ -215,25 +213,9 @@
   </tbody>
 </table>
 
-<script>
-  function editRepresentative(id, first_name, last_name, email, phone_number) {
-    const id__input = document.querySelector('#id__edit')
-    const first_name__input = document.querySelector('#first_name__edit')
-    const last_name__input = document.querySelector('#last_name__edit')
-    const email__input = document.querySelector('#email__edit')
-    const phone_number__input = document.querySelector('#phone_number__edit')
-  
-    id__input.value = id
-    first_name__input.value = first_name
-    last_name__input.value = last_name
-    email__input.value = email
-    phone_number__input.value = phone_number
-  }
-  
-</script>
+
 
 {% include 'ncl/representative/add_representative.html' %}
 {% include 'ncl/representative/edit_representative.html' %}
-{% include 'ncl/others/delete_alert.html' %}
 {% include 'ncl/student/add_student.html' %}
 {% endblock %}

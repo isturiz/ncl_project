@@ -130,8 +130,12 @@ def add_payment(request):
 # Course Views
 def course(request):
     course_list = Course.objects.all()
+    teacher_list = Teacher.objects.all()
+
     return render(request, 'ncl/course/course.html', {
-        'course_list': course_list
+        'course_list': course_list,
+        'teacher_list': teacher_list,
+        
     })
 
 def add_course(request):
@@ -144,6 +148,37 @@ def add_course(request):
         form = CourseForm()
     return render(request, 'course.html', {'form': form})
 
+# def edit_course(request):
+#   if request.method == 'POST':
+#     id = request.POST.get('id')
+#     name = request.POST.get('name')
+#     teacher = request.POST.get('teacher')
+
+#     course = Course.objects.get(id=id)
+#     course.name = name
+#     course.teacher = teacher
+#     course.save()
+
+#     return redirect('course')
+
+#   return render(request, 'edit_course.html')
+
+def edit_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+
+    if request.method == 'POST':
+        form = CourseForm(request.POST, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('course')
+    else:
+        form = CourseForm(instance=course)
+    return render(request, 'course.html', {'form': form})
+
+def delete_course(request, course_id):
+    course = Course.objects.get(id=course_id)
+    course.delete()
+    return redirect('course')
 
 # Inscription Views
 def inscription(request):

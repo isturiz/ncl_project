@@ -16,7 +16,10 @@ class RepresentativeForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = '__all__'
+        fields = ['name', 'teacher']
+        widgets = {
+            'teacher': forms.CheckboxSelectMultiple(),
+        }
 
 class TeacherForm(forms.ModelForm):
     class Meta:

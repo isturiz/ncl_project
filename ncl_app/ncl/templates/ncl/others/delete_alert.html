@@ -45,23 +45,13 @@
           Confirmar eliminar
         </h3>
 
-        {% if representative.id %}
-
-        <a
-          href="{% url 'delete_representative' representative.id %}"
-          data-modal-toggle="deleteAlert"
-          class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-          >Confirmar
-        </a>
-        {% else %}
         <a
           href=""
           data-modal-toggle="deleteAlert"
-          id="deleteRepresentativeLink"
+          id="send_confirmation"
           class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
           >Confirmar
         </a>
-        {% endif %}
 
         <button
           data-modal-toggle="deleteAlert"
@@ -79,17 +69,18 @@
   const deleteButtons = document.querySelectorAll(
     '[data-modal-toggle="deleteAlert"]'
   );
-  console.log(deleteButtons);
   if (deleteButtons.length > 0) {
     deleteButtons.forEach((button) => {
+      const element = button.dataset;
+      console.log(element)
       button.addEventListener("click", () => {
-        const representativeId = button.dataset.representativeId;
-        // Usa el ID del representante para lo que necesites aquí
-        if (representativeId) {
-          const deleteLink = document.getElementById('deleteRepresentativeLink');
-          const url = `/ncl/representative/${representativeId}/delete/`;
-          deleteLink.setAttribute('href', url);
-        } 
+        const id = button.dataset.id;
+        const idType = button.dataset.idType;
+        if (id && idType) {
+          const deleteLink = document.getElementById("send_confirmation");
+          const url = `/ncl/${idType}/${id}/delete/`;
+          deleteLink.setAttribute("href", url);
+        }
       });
     });
   }
