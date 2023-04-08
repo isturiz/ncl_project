@@ -67,11 +67,8 @@
   </div>
 
   <div class="flex gap-x-3">
-    <button
-      type="button"
-      data-modal-toggle="addRepresentative"
-      class="text-white focus:ring-4 font-medium rounded-lg text-sm px-5 py-1.5 bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-blue-800"
-    >
+
+    <button data-modal-target="add_representative_modal" data-modal-toggle="add_representative_modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
       Nuevo representante
     </button>
 
@@ -112,7 +109,7 @@
     class="ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 inline-flex h-8 w-8 bg-blue-200 text-blue-600 hover:bg-blue-300"
     data-dismiss-target="#alertUser"
     aria-label="Close"
-    onclick="noShowAlert()"
+    onclick="no ()"
   >
     <span class="sr-only">Close</span>
     <svg

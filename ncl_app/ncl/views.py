@@ -25,9 +25,23 @@ def home(request):
 # Representative Views
 def representative(request):
     representative_list = Representative.objects.all()
-    return render(request, 'ncl/representative/representative.html', {
-        'representative_list': representative_list
-    })
+    form = RepresentativeForm()
+
+    if request.method == 'POST':
+        form = RepresentativeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('representative')
+    else:
+        form = RepresentativeForm()
+
+    context = {
+        'representative_list': representative_list,
+        'form': form
+    }
+
+    
+    return render(request, 'ncl/representative/representative.html', context)
 
 def add_representative(request):
     if request.method == 'POST':
@@ -37,7 +51,8 @@ def add_representative(request):
             return redirect('representative')
     else:
         form = RepresentativeForm()
-    return render(request, 'add_representative.html', {'form': form})
+
+    return render(request, 'ncl/representative/add_representative.html', {'form': form})
 
 def edit_representative(request):
   if request.method == 'POST':
@@ -56,7 +71,7 @@ def edit_representative(request):
 
     return redirect('representative')
 
-  return render(request, 'edit_representative.html')
+  return render(request, 'representative/edit_representative.html')
 
 def delete_representative(request, representative_id):
     representative = Representative.objects.get(id=representative_id)
@@ -147,6 +162,7 @@ def add_course(request):
     else:
         form = CourseForm()
     return render(request, 'course.html', {'form': form})
+
 
 # def edit_course(request):
 #   if request.method == 'POST':

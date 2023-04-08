@@ -18,7 +18,7 @@ urlpatterns = [
 
     #ex: ncl/representative
     path('representative/', representative, name='representative'),
-    path('add-representative/', add_representative, name='add_representative'),
+    path('representative/add/', add_representative, name='add_representative'),
     path('representative/edit/', edit_representative, name='edit_representative'),
     path('representative/<int:representative_id>/delete/', delete_representative, name='delete_representative'),
     # path('representative/<int:representative_id>/edit/', edit_representative, name='edit_representative'),
