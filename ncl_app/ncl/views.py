@@ -40,15 +40,6 @@ def representative(request):
     }
     return render(request, 'ncl/representative/representative.html', context)
 
-def add_representative(request):
-    if request.method == 'POST':
-        form = RepresentativeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('representative')
-    else:
-        form = RepresentativeForm()
-    return render(request, 'ncl/representative/add_representative.html', {'form': form})
 
 def edit_representative(request):
   if request.method == 'POST':
@@ -100,34 +91,26 @@ def student(request):
     }
     return render(request, 'ncl/student/student.html', context)
 
-def add_student(request):
-    if request.method == 'POST':
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('student')
-    else:
-        form = StudentForm()
-    return render(request, 'add_student.html', {'form': form})
-
 
 
 # Teacher Views
 def teacher(request):
     teacher_list = Teacher.objects.all()
-    return render(request, 'ncl/teacher/teacher.html', {
-        'teacher_list': teacher_list
-    })
-
-def add_teacher(request):
+    
     if request.method == 'POST':
         form = TeacherForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('teacher')
     else:
-        form = RepresentativeForm()
-    return render(request, 'add_teacher.html', {'form': form})
+        form = TeacherForm()
+
+    context = {
+        'teacher_list': teacher_list,
+        'form': form,
+    }
+    return render(request, 'ncl/teacher/teacher.html', context)
+
 
 # Payment Views
 def payment(request):
@@ -136,14 +119,6 @@ def payment(request):
     course_list = Course.objects.all()
     student_list = Student.objects.all()
 
-    return render(request, 'ncl/payment/payment.html', {
-        'payment_list': payment_list,
-        'total_income': total_income,
-        'course_list': course_list,
-        'student_list': student_list
-    })
-
-def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -151,28 +126,40 @@ def add_payment(request):
             return redirect('payment')
     else:
         form = PaymentForm()
-    return render(request, 'payment.html', {'form': form})
+
+    context = {
+        'payment_list': payment_list,
+        'total_income': total_income,
+        'course_list': course_list,
+        'student_list': student_list,
+        'form': form,
+    }
+    return render(request, 'ncl/payment/payment.html', context)
+
 
 # Course Views
 def course(request):
     course_list = Course.objects.all()
     teacher_list = Teacher.objects.all()
 
-    return render(request, 'ncl/course/course.html', {
-        'course_list': course_list,
-        'teacher_list': teacher_list,
-        
-    })
-
-def add_course(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('course')
     else:
-        form = CourseForm()
-    return render(request, 'course.html', {'form': form})
+        initial_values = {
+            'teacher': teacher_list.first(),
+        }
+        form = CourseForm(initial=initial_values)
+
+    context = {
+        'course_list': course_list,
+        'teacher_list': teacher_list,
+        'form': form,
+    }
+    return render(request, 'ncl/course/course.html', context)
+
 
 
 # def edit_course(request):
@@ -213,13 +200,6 @@ def inscription(request):
     student_list = Student.objects.all()
     course_list = Course.objects.all()
 
-    return render(request, 'ncl/inscription/inscription.html', {
-        'inscription_list': inscription_list,
-        'student_list': student_list,
-        'course_list': course_list,
-    })
-
-def add_inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
         if form.is_valid():
@@ -227,4 +207,12 @@ def add_inscription(request):
             return redirect('inscription')
     else:
         form = InscriptionForm()
-    return render(request, 'inscription.html', {'form': form})
+
+    context = {
+        'inscription_list': inscription_list,
+        'student_list': student_list,
+        'course_list': course_list,
+        'form': form
+    }
+    return render(request, 'ncl/inscription/inscription.html', context)
+

@@ -42,8 +42,10 @@
             <label
               for="{{ field.id_for_label }}"
               class="block mb-2 text-sm font-medium text-white"
-              >{{ field.label }}</label
+              >{{ field.label }} {{field.field.widget.input}}</label
             >
+
+            {% comment %} if isn't select {% endcomment %}
             {% if field.field.widget.input_type != 'select' %}
             <input
               type="{{ field.field.widget.input_type }}"
@@ -51,20 +53,36 @@
               class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               placeholder="{{ field.field.widget.attrs.placeholder }}"
             />
+            {% comment %} if is select (this is much improvable ) {% endcomment %}
             {% else %}
-            <select
-              name="{{ field.name }}"
-              class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-            >
-            
-              <option value="">-- Ninguno --</option>
-              {% for obj in field.field.queryset %}
-              <option value="{{ obj.pk }}">{{ obj }}</option>
-              {% endfor %}
-            </select>
+              {% comment %} if is select with multiple options {% endcomment %}
+              {% if field.field.widget.allow_multiple_selected %}
+                <select
+                name="{{ field.name }}"
+                multiple
+                class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                >
+                <option value="">-- Ninguno --</option>
+                {% for obj in field.field.queryset %}
+                <option value="{{ obj.pk }}">{{ obj }}</option>
+                {% endfor %}
+              </select>
+              {% comment %} if is select without multiple options {% endcomment %}
+              {% else %}
+                <select
+                  name="{{ field.name }}"
+                  class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">-- Ninguno --</option>
+                  {% for obj in field.field.queryset %}
+                  <option value="{{ obj.pk }}">{{ obj }}</option>
+                  {% endfor %}
+                </select>
+              {% endif %}
             {% endif %}
           </div>
-          {% endfor %} {% for error in field.errors %}
+          {% endfor %}
+          {% for error in field.errors %}
           <div class="">{{ error }}</div>
           {% endfor %}
         </div>

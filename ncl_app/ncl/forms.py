@@ -1,10 +1,7 @@
 from django import forms
-from .models import Student, Representative, Course, Teacher, Inscription, Payment, AgeCategory
+from .models import Student, Representative, Course, Teacher, Inscription, Payment
 
 class StudentForm(forms.ModelForm):
-
-    age_category = forms.ModelChoiceField(queryset=AgeCategory.objects.all(), empty_label=None)
-    representative = forms.ModelChoiceField(queryset=Representative.objects.all(), empty_label=None)
     class Meta:
         model = Student
         fields = [
@@ -64,16 +61,44 @@ class RepresentativeForm(forms.ModelForm):
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['name', 'teacher']
+        fields = [
+            'name', 
+            'teacher'
+            ]
+        labels = {
+            'name': 'Nombre', 
+            'teacher': 'Profesores', 
+        }
         widgets = {
-            'teacher': forms.CheckboxSelectMultiple(),
+            'name': forms.TextInput(attrs={'placeholder': 'Nombre del curso'}),
+            'teacher': forms.SelectMultiple(attrs={'multiple': True}),
         }
 
 
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = '__all__'
+        fields = [
+            'first_name', 
+            'last_name',
+            'email',
+            'phone_number',
+            'address',
+        ]
+        labels = {
+            'first_name': 'Nombre', 
+            'last_name': 'Apellido',
+            'email': 'Correo electrónico',
+            'phone_number': 'Número de teléfono',
+            'address': 'Dirección',
+        }
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'Nombre'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Apellido'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'email@domain.com'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': '04121555551'}),
+            'address': forms.TextInput(attrs={'placeholder': 'Calle, número de casa'}),
+        }
 
 class InscriptionForm(forms.ModelForm):
     class Meta:
@@ -83,5 +108,28 @@ class InscriptionForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = [
+            'student', 
+            'payment_date',
+            'reference_number',
+            'amount',
+            'description',
+            'course',
+        ]
+        labels = {
+            'student': 'Estudiante', 
+            'payment_date': 'Fecha del pago',
+            'reference_number': 'Número de referencia',
+            'amount': 'Monto',
+            'description': 'Descripción',
+            'course': 'Curso',
+        }
+        widgets = {
+            'student': forms.Select(),
+            'payment_date': forms.DateInput(attrs={'type': 'date'}),
+            'reference_number': forms.TextInput(attrs={'placeholder': '0000538'}),
+            'amount': forms.NumberInput(attrs={'step': '0.01', 'min': '0', 'placeholder': '50'}),
+            'description': forms.TextInput(attrs={'placeholder': 'Descripción'}),
+            'course': forms.SelectMultiple(attrs={'multiple': True}),
+        }
 
