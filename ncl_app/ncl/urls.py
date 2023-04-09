@@ -14,7 +14,7 @@ urlpatterns = [
 
     #ex: ncl/student
     path('student/', student, name='student'),
-    path('add-student/', add_student, name='add_student'),
+    path('student/add/', add_student, name='add_student'),
 
     #ex: ncl/representative
     path('representative/', representative, name='representative'),

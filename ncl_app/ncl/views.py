@@ -25,7 +25,6 @@ def home(request):
 # Representative Views
 def representative(request):
     representative_list = Representative.objects.all()
-    form = RepresentativeForm()
 
     if request.method == 'POST':
         form = RepresentativeForm(request.POST)
@@ -39,8 +38,6 @@ def representative(request):
         'representative_list': representative_list,
         'form': form
     }
-
-    
     return render(request, 'ncl/representative/representative.html', context)
 
 def add_representative(request):
@@ -51,7 +48,6 @@ def add_representative(request):
             return redirect('representative')
     else:
         form = RepresentativeForm()
-
     return render(request, 'ncl/representative/add_representative.html', {'form': form})
 
 def edit_representative(request):
@@ -82,12 +78,27 @@ def delete_representative(request, representative_id):
 def student(request):
     student_list = Student.objects.all()
     representative_list = Representative.objects.all()
-    age_category = AgeCategory.objects.all()
-    return render(request, 'ncl/student/student.html', {
+    age_category_list = AgeCategory.objects.all()
+    
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student')
+    else:
+        initial_values = {
+            'age_category': age_category_list.first(),
+            'representative': representative_list.first(),
+        }
+        form = StudentForm(initial=initial_values)
+
+    context = {
         'student_list': student_list,
         'representative_list': representative_list,
-        'age_category': age_category
-    })
+        'age_category_list': age_category_list,
+        'form': form
+    }
+    return render(request, 'ncl/student/student.html', context)
 
 def add_student(request):
     if request.method == 'POST':
