@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if form.errors %}
+        <p>error en el formulario</p>
+    {% endif %}
+
+    <h1>Registro de estudiante</h1>
+
+    <form action="{% url 'save_student' %}" method="POST" class="flex flex-col">
+        {% csrf_token %}
+        {% if msg %}
+            <p>Registro exitoso</p>
+        {% endif %}
+
+        {{ register_form }}
+
+        <button type="submit">Registrar</button>
+    </form>
+{% endblock %}

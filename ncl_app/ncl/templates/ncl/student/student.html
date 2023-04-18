@@ -75,12 +75,8 @@
       Nuevo representante
     </button>
 
-    <button data-modal-target="register_form" data-modal-toggle="register_form" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
+    <a href="{% url 'register_student' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
       Nuevo estudiante
-    </button>
-
-    <a href="{% url 'add_student' %}">
-      Nuevo estudiante link
     </a>
   </div>
 
@@ -160,11 +156,10 @@
         {{student.representative.last_name}}
       </td>
       <td class="py-4 px-6 rounded-r-xl">
-        <button
+        <a
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="edit_form"
-          onclick="editStudent()"
+          href="{% url 'edit_student' student.id %}"
         >
           <svg
             class="w-6 h-6"
@@ -180,7 +175,7 @@
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </a>
 
         <button
           class="text-red-500"

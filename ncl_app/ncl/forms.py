@@ -1,7 +1,11 @@
 from django import forms
-from .models import Student, Representative, Course, Teacher, Inscription, Payment
+from .models import Student, Representative, Course, Teacher, Inscription, Payment, AgeCategory
 
 class StudentForm(forms.ModelForm):
+
+    age_category = forms.ModelChoiceField(queryset=AgeCategory.objects.all(), empty_label=None)
+    representative = forms.ModelChoiceField(queryset=Representative.objects.all(), empty_label=None)
+
     class Meta:
         model = Student
         fields = [

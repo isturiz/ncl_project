@@ -24,7 +24,6 @@ def home(request):
 
 # Representative Views
 def representative(request):
-    representative_list = Representative.objects.all()
 
     if request.method == 'POST':
         register_form = RepresentativeForm(request.POST)
@@ -38,9 +37,61 @@ def representative(request):
         'representative_list': representative_list,
         'register_form': register_form
     }
-    return render(request, 'ncl/representative/representative.html', context)
 
+class RepresentativeViews(HttpResponse):
+    def index(request):
+        representative_list = Representative.objects.all()
 
+        context = {
+            'representative_list': representative_list,
+        }
+        return render(request, 'ncl/representative/representative.html', context)
+    
+    def form(request):
+        register_form = RepresentativeForm()
+        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
+    
+    def process_form(request):
+        register_form = RepresentativeForm(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+        return redirect('representative')
+
+    def edit(request, representative_id):
+        representative = Representative.objects.get(id=representative_id)
+        edit_form = RepresentativeForm(instance=representative)
+        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'representative': representative})
+    
+    def process_edit(request, representative_id):
+        representative = Representative.objects.get(pk=representative_id)
+        edit_form = RepresentativeForm(request.POST, instance=representative)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('representative')
+
+class Forms(HttpResponse):
+    def form(request):
+        register_form = RepresentativeForm()
+        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
+    
+    def process_form(request):
+        register_form = RepresentativeForm(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+        return redirect('representative')
+
+    def edit(request, representative_id):
+        representative = Representative.objects.get(id=representative_id)
+        edit_form = RepresentativeForm(instance=representative)
+        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'representative': representative})
+    
+    def process_edit(request, representative_id):
+        representative = Representative.objects.get(pk=representative_id)
+        edit_form = RepresentativeForm(request.POST, instance=representative)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('representative')
+    
 def edit_representative(request):
   if request.method == 'POST':
     id = request.POST.get('id')
@@ -66,48 +117,41 @@ def delete_representative(request, representative_id):
     return redirect('representative')
 
 # Student Views
-def student(request):
-    student_list = Student.objects.all()
-    representative_list = Representative.objects.all()
-    age_category_list = AgeCategory.objects.all()
+class student(HttpResponse):
+    def index(request):
+        student_list = Student.objects.all()
+        representative_list = Representative.objects.all()
+        age_category_list = AgeCategory.objects.all()
+
+        context = {
+            'student_list': student_list,
+            'representative_list': representative_list,
+            'age_category_list': age_category_list,
+        }
+        return render(request, 'ncl/student/student.html', context)
     
-    # if request.method == 'POST':
-    #     print('Entrada al if')
-    #     register_form = StudentForm(request.POST)
-    #     if register_form.is_valid():
-    #         register_form.save()
-    #         return redirect('student')
-    # else:
-    #     print('Entrada al else')
-    #     initial_values = {
-    #         'age_category': age_category_list.first(),
-    #         'representative': representative_list.first(),
-    #     }
-    #     register_form = StudentForm(initial=initial_values)
-
-    context = {
-        'student_list': student_list,
-        'representative_list': representative_list,
-        'age_category_list': age_category_list,
-    }
-    return render(request, 'ncl/student/student.html', context)
-
-def add_student(request):
-    if request.method == 'POST':
-        print('Entrada al if add student')
+    def form(request):
+        register_form = StudentForm()
+        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
+    
+    def process_form(request):
         register_form = StudentForm(request.POST)
-        print(register_form.errors)
         if register_form.is_valid():
-            print('formulario válido student')
             register_form.save()
-            print('formulario guardado student')
-            return redirect('student')
-        
-    register_form = StudentForm()
-    context = {
-        'register_form': register_form
-    }
-    return render(request, 'ncl/forms/register_form_temp.html', context)
+        return redirect('student')
+        # return render(request, 'ncl/forms/register_student.html', {'student_form': student_form, "msg": "Student registered"})
+
+    def edit(request, student_id):
+        student = Student.objects.get(id=student_id)
+        edit_form = StudentForm(instance=student)
+        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'student': student})
+    
+    def process_edit(request, student_id):
+        student = Student.objects.get(pk=student_id)
+        edit_form = StudentForm(request.POST, instance=student)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('student')
 
 
 def edit_student(request, id):
