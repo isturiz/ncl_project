@@ -11,7 +11,7 @@ class RepresentativeAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email', 'phone_number')
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_teacher_name')
+    list_display = ('name', 'get_teacher_name', 'id')
 
     def get_teacher_name(self, obj):
         return ", ".join([t.first_name for t in obj.teacher.all()])

@@ -1,8 +1,10 @@
 function editModal(data) {
+  
   const keys = Object.keys(data);
-
+  
   for (const key of keys) {
-    const input = document.querySelector(`#${key}__edit`);
+    const input = document.querySelector(`#id_edit-${key}__edit`);
+    console.log(input)
     if (input) {
       if (input.tagName === 'SELECT') {
         input.querySelectorAll('option').forEach(option => option.selected = false);

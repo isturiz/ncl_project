@@ -1,7 +1,8 @@
 from django.urls import path
 
-from .views import home, student, teacher, inscription
+from .views import home, teacher, inscription
 
+from .views import student, add_student, delete_student, edit_student
 from .views import representative, edit_representative, delete_representative
 from .views import course, edit_course, delete_course
 from .views import payment
@@ -13,6 +14,9 @@ urlpatterns = [
 
     #ex: ncl/student
     path('student/', student, name='student'),
+    path('student/add/', add_student, name='add_student'), 
+    path('student/<int:id>/edit/', edit_student, name='edit_student'),
+    path('student/<int:id>/delete/', delete_student, name='delete_student'),
 
     #ex: ncl/representative
     path('representative/', representative, name='representative'),
@@ -22,14 +26,14 @@ urlpatterns = [
 
     #ex: ncl/teacher
     path('teacher/', teacher, name='teacher'),
-    
+
     #ex: ncl/payment
     path('payment/', payment, name='payment'),
 
     #ex: ncl/course
     path('course/', course, name='course'),
-    path('course/<int:course_id>/edit/', edit_course, name='edit_course'),
-    path('course/<int:course_id>/delete/', delete_course, name='delete_course'),
+    path('course/<int:id>/edit/', edit_course, name='edit_course'),
+    path('course/<int:id>/delete/', delete_course, name='delete_course'),
 
     #ex: ncl/inscription
     path('inscription/', inscription, name='inscription'),

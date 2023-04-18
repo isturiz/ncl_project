@@ -78,6 +78,10 @@
     <button data-modal-target="register_form" data-modal-toggle="register_form" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
       Nuevo estudiante
     </button>
+
+    <a href="{% url 'add_student' %}">
+      Nuevo estudiante link
+    </a>
   </div>
 
   <!-- Modal toggle -->
@@ -159,7 +163,7 @@
         <button
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="editStudentModal"
+          data-modal-toggle="edit_form"
           onclick="editStudent()"
         >
           <svg
@@ -182,9 +186,8 @@
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          targetEl=""
-          onclick="deleteUser('<?php //echo ($row['cedula']) 
-                                                                                                                      ?>')"
+          data-id="{{student.id}}"
+          data-id-type="student"
         >
           <svg
             class="w-6 h-6"
@@ -215,5 +218,6 @@
   </tbody>
 </table>
 
+{% include 'ncl/forms/edit_form.html' %}
 {% include 'ncl/forms/register_form.html' %}
 {% endblock %}

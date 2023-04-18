@@ -1,23 +1,24 @@
+<!-- Edit user modal -->
 <div
-  id="register_form"
+  id="edit_form"
   tabindex="-1"
   aria-hidden="true"
   class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center p-4 w-full md:inset-0 h-modal md:h-full"
 >
   <div class="relative w-full max-w-2xl h-full md:h-auto">
     <!-- Modal content -->
-    <form method="POST" enctype="multipart/form-data" class="relative rounded-lg shadow bg-gray-700">
+    <form method="POST" class="relative rounded-lg shadow bg-gray-700">
       {% csrf_token %}
       <!-- Modal header -->
       <div
         class="flex justify-between items-start p-4 rounded-t border-b border-gray-600"
       >
-        <h3 class="text-xl font-semibold text-white">Registrar</h3>
+        <h3 class="text-xl font-semibold text-white">Editar</h3>
 
         <button
           type="button"
           class="text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
-          data-modal-toggle="register_form"
+          data-modal-toggle="edit_form"
         >
           <svg
             class="w-5 h-5"
@@ -36,16 +37,18 @@
       <!-- Modal body -->
       <div class="p-6 space-y-6">
         <div class="grid grid-cols-6 gap-6">
-          {% for field in register_form %}
+          {% for field in edit_form %}
           <div class="col-span-6 sm:col-span-3">
             <label
-              for="{{ field.id_for_label }}"
+              for="{{ field.id_for_label }}__edit"
               class="block mb-2 text-sm font-medium text-white"
-              >{{ field.field.label }} {{field.field.widget.input}}</label
+              >{{ field.label }} {{field.field.widget.input}}</label
             >
+
             {% comment %} if isn't select {% endcomment %}
             {% if field.field.widget.input_type != 'select' %}
             <input
+              id="{{ field.id_for_label }}__edit"
               type="{{ field.field.widget.input_type }}"
               name="{{ field.name }}"
               class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
@@ -57,6 +60,7 @@
               {% if field.field.widget.allow_multiple_selected %}
                 <select
                 name="{{ field.name }}"
+                id="{{ field.id_for_label }}__edit"
                 multiple
                 class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                 >
@@ -68,7 +72,8 @@
               {% comment %} if is select without multiple options {% endcomment %}
               {% else %}
                 <select
-                  name="{{ field.field.name }}"
+                  name="{{ field.name }}"
+                  id="{{ field.id_for_label }}__edit"
                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">-- Ninguno --</option>
@@ -80,6 +85,9 @@
             {% endif %}
           </div>
           {% endfor %}
+          {% for error in field.errors %}
+          <div class="">{{ error }}</div>
+          {% endfor %}
         </div>
       </div>
 
@@ -89,7 +97,7 @@
       >
         <button
           type="submit"
-          name="register-form-submit"
+          name="edit-form-submit"
           class="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
         >
           Registrar
