@@ -66,9 +66,9 @@
     </div>
   </div>
 
-  <button data-modal-target="register_form" data-modal-toggle="register_form" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
+  <a href="{% url 'register_form_teacher' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
     Nuevo profesor
-  </button>
+  </a>
 </div>
 
 <div
@@ -141,11 +141,10 @@
       <td class="py-4 px-6">{{teacher.phone_number}}</td>
       <td class="py-4 px-6 text-right flex justify-between">
         <!-- Edit nuevo: oficial -->
-        <button
+        <a
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="editUserModal"
-          onclick="editUser()"
+          href="{% url 'edit_form__teacher' teacher.id %}"
         >
           <svg
             class="w-6 h-6"
@@ -161,14 +160,14 @@
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </a>
 
         <button
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          targetEl=""
-          onclick="deleteUser('')"
+          data-id="{{teacher.id}}"
+          data-id-type="teacher"
         >
           <svg
             class="w-6 h-6"
@@ -185,6 +184,7 @@
             ></path>
           </svg>
         </button>
+
       </td>
     </tr>
 

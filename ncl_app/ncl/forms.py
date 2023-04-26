@@ -3,8 +3,8 @@ from .models import Student, Representative, Course, Teacher, Inscription, Payme
 
 class StudentForm(forms.ModelForm):
 
-    age_category = forms.ModelChoiceField(queryset=AgeCategory.objects.all(), empty_label=None)
-    representative = forms.ModelChoiceField(queryset=Representative.objects.all(), empty_label=None)
+    # age_category = forms.ModelChoiceField(queryset=AgeCategory.objects.all(), empty_label=None)
+    # representative = forms.ModelChoiceField(queryset=Representative.objects.all(), empty_label=None)
 
     class Meta:
         model = Student

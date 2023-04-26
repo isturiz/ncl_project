@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Sum
 
+from django.urls import reverse
+
 from .models import Representative, Student
 from .models import AgeCategory
 from .models import Teacher
@@ -22,22 +24,6 @@ def home(request):
         'total_income': total_income
     })
 
-# Representative Views
-def representative(request):
-
-    if request.method == 'POST':
-        register_form = RepresentativeForm(request.POST)
-        if register_form.is_valid():
-            register_form.save()
-            return redirect('representative')
-    else:
-        register_form = RepresentativeForm()
-
-    context = {
-        'representative_list': representative_list,
-        'register_form': register_form
-    }
-
 class RepresentativeViews(HttpResponse):
     def index(request):
         representative_list = Representative.objects.all()
@@ -47,69 +33,36 @@ class RepresentativeViews(HttpResponse):
         }
         return render(request, 'ncl/representative/representative.html', context)
     
-    def form(request):
+    def register_form(request):
         register_form = RepresentativeForm()
-        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
+        url_process = 'register_form_process__representative'
+        return render(request, 'ncl/forms/register.html', {'register_form': register_form, 'url_process': url_process})
     
-    def process_form(request):
+    def register_form_process(request):
         register_form = RepresentativeForm(request.POST)
         if register_form.is_valid():
             register_form.save()
         return redirect('representative')
 
-    def edit(request, representative_id):
+    def edit_form(request, representative_id):
         representative = Representative.objects.get(id=representative_id)
         edit_form = RepresentativeForm(instance=representative)
-        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'representative': representative})
+
+        url_process = reverse('edit_form_process__representative', args=[representative.id])
+        context = {
+            'edit_form': edit_form,
+            'representative': representative,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
     
-    def process_edit(request, representative_id):
+    def edit_form_process(request, representative_id):
         representative = Representative.objects.get(pk=representative_id)
         edit_form = RepresentativeForm(request.POST, instance=representative)
         if edit_form.is_valid():
             edit_form.save()
         return redirect('representative')
 
-class Forms(HttpResponse):
-    def form(request):
-        register_form = RepresentativeForm()
-        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
-    
-    def process_form(request):
-        register_form = RepresentativeForm(request.POST)
-        if register_form.is_valid():
-            register_form.save()
-        return redirect('representative')
-
-    def edit(request, representative_id):
-        representative = Representative.objects.get(id=representative_id)
-        edit_form = RepresentativeForm(instance=representative)
-        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'representative': representative})
-    
-    def process_edit(request, representative_id):
-        representative = Representative.objects.get(pk=representative_id)
-        edit_form = RepresentativeForm(request.POST, instance=representative)
-        if edit_form.is_valid():
-            edit_form.save()
-        return redirect('representative')
-    
-def edit_representative(request):
-  if request.method == 'POST':
-    id = request.POST.get('id')
-    first_name = request.POST.get('first_name')
-    last_name = request.POST.get('last_name')
-    email = request.POST.get('email')
-    phone_number = request.POST.get('phone_number')
-
-    representative = Representative.objects.get(id=id)
-    representative.first_name = first_name
-    representative.last_name = last_name
-    representative.email = email
-    representative.phone_number = phone_number
-    representative.save()
-
-    return redirect('representative')
-
-  return render(request, 'representative/edit_representative.html')
 
 def delete_representative(request, representative_id):
     representative = Representative.objects.get(id=representative_id)
@@ -117,7 +70,7 @@ def delete_representative(request, representative_id):
     return redirect('representative')
 
 # Student Views
-class student(HttpResponse):
+class StudentViews(HttpResponse):
     def index(request):
         student_list = Student.objects.all()
         representative_list = Representative.objects.all()
@@ -130,120 +83,153 @@ class student(HttpResponse):
         }
         return render(request, 'ncl/student/student.html', context)
     
-    def form(request):
+    def register_form(request):
         register_form = StudentForm()
-        return render(request, 'ncl/forms/register.html', {'register_form': register_form})
+        url_process = 'register_form_process__student'
+
+        context = {
+            'register_form': register_form,
+            'url_process': url_process
+        }
+
+        return render(request, 'ncl/forms/register.html', context)
     
-    def process_form(request):
+    def register_form_process(request):
         register_form = StudentForm(request.POST)
         if register_form.is_valid():
             register_form.save()
         return redirect('student')
-        # return render(request, 'ncl/forms/register_student.html', {'student_form': student_form, "msg": "Student registered"})
 
-    def edit(request, student_id):
+    def edit_form(request, student_id):
         student = Student.objects.get(id=student_id)
         edit_form = StudentForm(instance=student)
-        return render(request, 'ncl/forms/edit.html', {'edit_form': edit_form, 'student': student})
+
+        url_process = reverse('edit_form_process_student', args=[student.id])
+        context = {
+            'edit_form': edit_form,
+            'student': student,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
     
-    def process_edit(request, student_id):
+    def edit_form_process(request, student_id):
         student = Student.objects.get(pk=student_id)
         edit_form = StudentForm(request.POST, instance=student)
         if edit_form.is_valid():
             edit_form.save()
         return redirect('student')
 
-
-def edit_student(request, id):
-    student = get_object_or_404(Student, id=id)
-
-    if request.method == 'POST':
-        form = StudentForm(request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return redirect('student')
-    else:
-        form = StudentForm(instance=student)
-    context = {
-        'student': student,
-        'form': form,
-    }
-    return render(request, 'ncl/student/student.html', context)
-
-def delete_student(request, id):
-    student = Student.objects.get(id=id)
+def delete_student(request, student_id):
+    student = Student.objects.get(id=student_id)
     student.delete()
     return redirect('student')
 
-# Teacher Views
-def teacher(request):
-    teacher_list = Teacher.objects.all()
-    
-    if request.method == 'POST':
-        register_form = TeacherForm(request.POST)
-        print("Contenido de POST:", request.POST)
-        print(register_form)
-        if register_form.is_valid():
-            register_form.save()
-            return redirect('teacher')
-    else:
-        register_form = TeacherForm()
-
-    context = {
+class TeacherViews(HttpResponse):
+    def index(request):
+        teacher_list = Teacher.objects.all()
+        context = {
         'teacher_list': teacher_list,
-        'register_form': register_form,
     }
-    return render(request, 'ncl/teacher/teacher.html', context)
+        return render(request, 'ncl/teacher/teacher.html', context)
+    
+    def register_form(request):
+        register_form = TeacherForm()
+        url_process = 'register_form_process__teacher'
 
+        context = {
+            'register_form': register_form,
+            'url_process': url_process
+        }
 
-# Payment Views
-def payment(request):
-    payment_list = Payment.objects.all()
-    total_income = payment_list.aggregate(Sum('amount'))['amount__sum']
-    course_list = Course.objects.all()
-    student_list = Student.objects.all()
-
-    if request.method == 'POST':
-        register_form = PaymentForm(request.POST)
-        
+        return render(request, 'ncl/forms/register.html', context)
+    
+    def register_form_process(request):
+        register_form = TeacherForm(request.POST)
         if register_form.is_valid():
             register_form.save()
-            return redirect('payment')
-    else:
-        register_form = PaymentForm()
+        return redirect('teacher')
 
-    context = {
+    def edit_form(request, teacher_id):
+        teacher = Teacher.objects.get(id=teacher_id)
+        edit_form = TeacherForm(instance=teacher)
+
+        url_process = reverse('edit_form_process_teacher', args=[teacher.id])
+        context = {
+            'edit_form': edit_form,
+            'teacher': teacher,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
+    
+    def edit_form_process(request, teacher_id):
+        teacher = Teacher.objects.get(pk=teacher_id)
+        edit_form = TeacherForm(request.POST, instance=teacher)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('teacher')
+
+def delete_teacher(request, teacher_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    teacher.delete()
+    return redirect('teacher')
+
+class PaymentViews(HttpResponse):
+    def index(request):
+        payment_list = Payment.objects.all()
+        total_income = payment_list.aggregate(Sum('amount'))['amount__sum']
+        course_list = Course.objects.all()
+        student_list = Student.objects.all()
+        context = {
         'payment_list': payment_list,
         'total_income': total_income,
         'course_list': course_list,
         'student_list': student_list,
-        'register_form': register_form,
     }
-    return render(request, 'ncl/payment/payment.html', context)
+        return render(request, 'ncl/payment/payment.html', context)
+    
+    def register_form(request):
+        register_form = PaymentForm()
+        url_process = 'register_form_process__payment'
+
+        context = {
+            'register_form': register_form,
+            'url_process': url_process
+        }
+
+        return render(request, 'ncl/forms/register.html', context)
+    
+    def register_form_process(request):
+        register_form = PaymentForm(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+        return redirect('payment')
+
+    def edit_form(request, payment_id):
+        payment = Payment.objects.get(id=payment_id)
+        edit_form = PaymentForm(instance=payment)
+
+        url_process = reverse('edit_form_process_payment', args=[payment.id])
+        context = {
+            'edit_form': edit_form,
+            'payment': payment,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
+    
+    def edit_form_process(request, payment_id):
+        payment = Payment.objects.get(pk=payment_id)
+        edit_form = PaymentForm(request.POST, instance=payment)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('payment')
+    
+def delete_payment(request, payment_id):
+    payment = Payment.objects.get(id=payment_id)
+    payment.delete()
+    return redirect('payment')
 
 
-# Course Views
-# def course(request):
-#     course_list = Course.objects.all()
-#     teacher_list = Teacher.objects.all()
 
-#     if request.method == 'POST':
-#         form = CourseForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('course')
-#     else:
-#         initial_values = {
-#             'teacher': teacher_list.first(),
-#         }
-#         form = CourseForm(initial=initial_values)
-
-#     context = {
-#         'course_list': course_list,
-#         'teacher_list': teacher_list,
-#         'form': form,
-#     }
-#     return render(request, 'ncl/course/course.html', context)
 def course(request):
     course_list = Course.objects.all()
     teacher_list = Teacher.objects.all()
@@ -275,57 +261,113 @@ def course(request):
         return render(request, 'ncl/course/course.html', context)
 
 
-# def edit_course(request):
-#   if request.method == 'POST':
-#     id = request.POST.get('id')
-#     name = request.POST.get('name')
-#     teacher = request.POST.get('teacher')
 
-#     course = Course.objects.get(id=id)
-#     course.name = name
-#     course.teacher = teacher
-#     course.save()
-
-#     return redirect('course')
-
-#   return render(request, 'edit_course.html')
-
-def edit_course(request, id):
-    course = get_object_or_404(Course, id=id)
-
-    if request.method == 'POST':
-        form = CourseForm(request.POST, instance=course)
-        if form.is_valid():
-            form.save()
-            return redirect('course')
-    else:
-        form = CourseForm(instance=course)
-    return render(request, 'course.html', {'form': form})
-
-def delete_course(request, id):
-    course = Course.objects.get(id=id)
+def delete_course(request, course_id):
+    course = Course.objects.get(id=course_id)
     course.delete()
     return redirect('course')
 
-# Inscription Views
-def inscription(request):
-    inscription_list = Inscription.objects.all()
-    student_list = Student.objects.all()
-    course_list = Course.objects.all()
 
-    if request.method == 'POST':
+class InscriptionViews(HttpResponse):
+    def index(request):
+        inscription_list = Inscription.objects.all()
+        student_list = Student.objects.all()
+        course_list = Course.objects.all()
+        context = {
+            'inscription_list': inscription_list,
+            'student_list': student_list,
+            'course_list': course_list,
+        }
+        return render(request, 'ncl/inscription/inscription.html', context)
+    
+    def register_form(request):
+        register_form = PaymentForm()
+        url_process = 'register_form_process__inscription'
+
+        context = {
+            'register_form': register_form,
+            'url_process': url_process
+        }
+
+        return render(request, 'ncl/forms/register.html', context)
+    
+    def register_form_process(request):
         register_form = InscriptionForm(request.POST)
         if register_form.is_valid():
             register_form.save()
-            return redirect('inscription')
-    else:
-        register_form = InscriptionForm()
+        return redirect('inscription')
 
-    context = {
-        'inscription_list': inscription_list,
-        'student_list': student_list,
-        'course_list': course_list,
-        'register_form': register_form
-    }
-    return render(request, 'ncl/inscription/inscription.html', context)
+    def edit_form(request, inscription_id):
+        inscription = Inscription.objects.get(id=inscription_id)
+        edit_form = InscriptionForm(instance=inscription)
 
+        url_process = reverse('edit_form_process_inscription', args=[inscription.id])
+        context = {
+            'edit_form': edit_form,
+            'inscription': inscription,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
+    
+    def edit_form_process(request, inscription_id):
+        inscription = Inscription.objects.get(pk=inscription_id)
+        edit_form = InscriptionForm(request.POST, instance=inscription)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('inscription')
+
+def delete_inscription(request, inscription_id):
+    inscription = Inscription.objects.get(id=inscription_id)
+    inscription.delete()
+    return redirect('inscription')
+
+class CourseViews(HttpResponse):
+    def index(request):
+        course_list = Course.objects.all()
+        teacher_list = Teacher.objects.all()
+        context = {
+            'course_list': course_list,
+            'teacher_list': teacher_list,
+        }
+        return render(request, 'ncl/course/course.html', context)
+    
+    def register_form(request):
+        register_form = CourseForm()
+        url_process = 'register_form_process__course'
+
+        context = {
+            'register_form': register_form,
+            'url_process': url_process
+        }
+
+        return render(request, 'ncl/forms/register.html', context)
+    
+    def register_form_process(request):
+        register_form = CourseForm(request.POST)
+        if register_form.is_valid():
+            register_form.save()
+        return redirect('course')
+
+    def edit_form(request, course_id):
+        course = Course.objects.get(id=course_id)
+        edit_form = CourseForm(instance=course)
+
+        url_process = reverse('edit_form_process_course', args=[course.id])
+        context = {
+            'edit_form': edit_form,
+            'course': course,
+            'url_process': url_process,
+        }
+        return render(request, 'ncl/forms/edit.html', context)
+    
+    def edit_form_process(request, course_id):
+        course = Course.objects.get(pk=course_id)
+        edit_form = CourseForm(request.POST, instance=course)
+        if edit_form.is_valid():
+            edit_form.save()
+        return redirect('course')
+
+def delete_course(request, course_id):
+    course = Course.objects.get(id=course_id)
+    course.delete()
+    return redirect('course')

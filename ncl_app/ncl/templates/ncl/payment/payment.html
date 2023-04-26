@@ -73,9 +73,9 @@
     </div>
   </div>
 
-  <button data-modal-target="register_form" data-modal-toggle="register_form" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
-    Añadir pago
-  </button>
+  <a href="{% url 'register_form_payment' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
+    Nuevo pago
+  </a>
 </div>
 
 <div
@@ -152,11 +152,10 @@
       </td>
       <td class="py-4 px-6 text-right flex justify-between">
         <!-- Edit nuevo: oficial -->
-        <button
+        <a
           class="text-white-500 editButton"
           type="button"
-          data-modal-toggle="newPayment"
-          onclick="editUser()"
+          href="{% url 'edit_form__payment' payment.id %}"
         >
           <svg
             class="w-6 h-6"
@@ -172,14 +171,14 @@
               d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
             ></path>
           </svg>
-        </button>
+        </a>
 
         <button
           class="text-red-500"
           type="button"
           data-modal-toggle="deleteAlert"
-          targetEl=""
-          onclick="deleteUser('')"
+          data-id="{{payment.id}}"
+          data-id-type="payment"
         >
           <svg
             class="w-6 h-6"
@@ -196,6 +195,7 @@
             ></path>
           </svg>
         </button>
+
       </td>
     </tr>
     {% endfor %} {% else %}

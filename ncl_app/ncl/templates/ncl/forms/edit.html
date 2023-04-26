@@ -4,16 +4,69 @@
         <p>error en el formulario</p>
     {% endif %}
 
-    <h1>Editar estudiante</h1>
+    <div class="p-6 space-y-6">     
+    <h1 class="block text-lg font-medium text-white">Editar</h1>
 
-    <form action="{% url 'process_edit' student.id %}" method="POST" class="flex flex-col">
+    <form action="{{ url_process }}" method="POST" class="flex flex-col">
         {% csrf_token %}
         {% if msg %}
-            <p>Altualizado exitoso</p>
+            <p>Editar exitoso</p>
         {% endif %}
 
-        {{ edit_form }}
-
-        <button type="submit">Registrar</button>
-    </form>
+        <div class="grid grid-cols-6 gap-6 mb-6">
+            {% for field in edit_form %}
+            <div class="col-span-6 sm:col-span-3">
+              <label
+                for="{{ field.id_for_label }}"
+                class="block mb-2 text-sm font-medium text-white"
+                >{{ field.field.label }}</label
+              >
+              {% comment %} if isn't select {% endcomment %}
+              {% if field.field.widget.input_type != 'select' %}
+              <input
+                type="{{ field.field.widget.input_type }}"
+                name="{{ field.name }}"
+                class="shadow-sm border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                placeholder="{{ field.field.widget.attrs.placeholder }}"
+                value="{{ field.value }}"
+              />
+              {% comment %} if is select (this is much improvable ) {% endcomment %}
+              {% else %}
+                {% comment %} if is select with multiple options {% endcomment %}
+                {% if field.field.widget.allow_multiple_selected %}
+                  <select
+                  name="{{ field.name }}"
+                  multiple
+                  class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  >
+                  <option value="">-- Ninguno --</option>
+                  {% for obj in field.field.queryset %}
+                  <option value="{{ obj.pk }}" {% if obj.pk in field.value %}selected{% endif %}>{{ obj }}</option>
+                  {% endfor %}
+                </select>
+                {% comment %} if is select without multiple options {% endcomment %}
+                {% else %}
+                  <select
+                    name="{{ field.name }}"
+                    class="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">-- Ninguno --</option>
+                    {% for obj in field.field.queryset %}
+                    <option value="{{ obj.pk }}" {% if obj.pk in field.value %}selected{% endif %}>{{ obj }}</option>
+                    {% endfor %}
+                  </select>
+                {% endif %}
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          
+          {% comment %} {{ register_form }} {% endcomment %}
+          <button 
+              class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+              type="submit">
+              Editar
+          </button>  
+        </form>
+    </div>
 {% endblock %}

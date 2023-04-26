@@ -71,11 +71,11 @@
 
   <div class="flex gap-x-3">
 
-    <button data-modal-target="register_form" data-modal-toggle="register_form" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
+    <a href="{% url 'register_form_representative' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
       Nuevo representante
-    </button>
+    </a>
 
-    <a href="{% url 'register_student' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
+    <a href="{% url 'register_form_student' %}" class="block text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800" type="button">
       Nuevo estudiante
     </a>
   </div>
@@ -159,7 +159,7 @@
         <a
           class="text-white-500 editButton"
           type="button"
-          href="{% url 'edit_student' student.id %}"
+          href="{% url 'edit_form__student' student.id %}"
         >
           <svg
             class="w-6 h-6"
