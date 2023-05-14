@@ -1,0 +1,39 @@
+<table class="w-full text-sm text-left text-gray-400" id="table-file">
+  <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+    <tr>
+      {% for key, value in item_property.items %}
+        <th scope="col" class="py-3 px-6">{{ value }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% if item_list %}
+    
+    {% for item in item_list %}
+
+      {% for key, value in item_property.items %}
+        <td class="py-4 px-6 rounded-l-xl">{{item.key}}</td>
+      {% endfor %}
+      <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+        <td class="py-4 px-6">{{item.last_name}}</td>
+        <td class="py-4 px-6">{{item.phone_number}}</td>
+        <td class="py-4 px-6">{{item.email}}</td>
+        <td class="py-4 px-6">
+          {{item.representative.first_name}}
+          {{item.representative.last_name}}
+        </td>
+        <td class="py-4 px-6 rounded-r-xl">
+        </td>
+      </tr>
+
+    {% endfor %}
+    {% else %}
+    <p>No {{ item_name }} are available.</p>
+    {% endif %}
+
+    <!-- Texto de buscar -->
+    <tr class="noSearch hide">
+      <td colspan="5"></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
 from django.urls import reverse
 
@@ -12,6 +12,9 @@ from .models import Course
 from .models import Inscription
 
 from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm, InscriptionForm, PaymentForm
+
+from .auth_views import *
+
 
 def index(request):
     return HttpResponse("Main page")
@@ -28,8 +31,30 @@ class RepresentativeViews(HttpResponse):
     def index(request):
         representative_list = Representative.objects.all()
 
+        representative_data = [
+            {
+                'title': 'Canto',
+                'subtitle': None,
+                'color': 'text-red-400',
+            },
+            {
+                'title': 'Piano',
+                'subtitle': None,
+                'color': 'text-yellow-400',
+            },
+            {
+                'title': 'Cuatro',
+                'subtitle': None,
+                'color': 'text-orange-400',
+            },
+            ]
+        #for i, course in enumerate(representative_list):
+        #    representatives = course.teacher.all()
+        #    representative_data[i]['subtitle'] = representatives.count()
+
         context = {
             'representative_list': representative_list,
+            'representative_data': representative_data,
         }
         return render(request, 'ncl/representative/representative.html', context)
     
@@ -75,11 +100,37 @@ class StudentViews(HttpResponse):
         student_list = Student.objects.all()
         representative_list = Representative.objects.all()
         age_category_list = AgeCategory.objects.all()
+        student_data = [
+        {
+            'title': 'Canto',
+            # 'num_teachers': teacher_list.filter(subject='Canto').count(),
+            'color': 'text-red-400',
+        },
+        {
+            'title': 'Piano',
+            # 'num_teachers': teacher_list.filter(subject='Piano').count(),
+            'color': 'text-yellow-400',
+        },
+        {
+            'title': 'Cuatro',
+            # 'num_teachers': teacher_list.filter(subject='Cuatro').count(),
+            'color': 'text-orange-400',
+        },
+        ]
+        item_property = {
+            'first_name': 'nombre',
+            'last_name': 'apellido',
+            'phone': 'teléfono',
+            'email': 'correo',
+            'representative': 'representante',
+        }
 
         context = {
             'student_list': student_list,
             'representative_list': representative_list,
             'age_category_list': age_category_list,
+            'student_data': student_data,
+            'item_property': item_property,
         }
         return render(request, 'ncl/student/student.html', context)
     
@@ -104,7 +155,7 @@ class StudentViews(HttpResponse):
         student = Student.objects.get(id=student_id)
         edit_form = StudentForm(instance=student)
 
-        url_process = reverse('edit_form_process_student', args=[student.id])
+        url_process = reverse('edit_form_process__student', args=[student.id])
         context = {
             'edit_form': edit_form,
             'student': student,
@@ -127,11 +178,33 @@ def delete_student(request, student_id):
 class TeacherViews(HttpResponse):
     def index(request):
         teacher_list = Teacher.objects.all()
+        courses = Course.objects.all()
+        teacher_data = [
+        {
+            'title': 'Canto',
+            'subtitle': None,
+            'color': 'text-red-400',
+        },
+        {
+            'title': 'Piano',
+            'subtitle': None,
+            'color': 'text-yellow-400',
+        },
+        {
+            'title': 'Cuatro',
+            'subtitle': None,
+            'color': 'text-orange-400',
+        },
+        ]
+        for i, course in enumerate(courses):
+            teachers = course.teacher.all()
+            teacher_data[i]['subtitle'] = teachers.count()
         context = {
         'teacher_list': teacher_list,
+        'teacher_data': teacher_data,
     }
         return render(request, 'ncl/teacher/teacher.html', context)
-    
+
     def register_form(request):
         register_form = TeacherForm()
         url_process = 'register_form_process__teacher'
@@ -153,7 +226,7 @@ class TeacherViews(HttpResponse):
         teacher = Teacher.objects.get(id=teacher_id)
         edit_form = TeacherForm(instance=teacher)
 
-        url_process = reverse('edit_form_process_teacher', args=[teacher.id])
+        url_process = reverse('edit_form_process__teacher', args=[teacher.id])
         context = {
             'edit_form': edit_form,
             'teacher': teacher,
@@ -208,7 +281,7 @@ class PaymentViews(HttpResponse):
         payment = Payment.objects.get(id=payment_id)
         edit_form = PaymentForm(instance=payment)
 
-        url_process = reverse('edit_form_process_payment', args=[payment.id])
+        url_process = reverse('edit_form_process__payment', args=[payment.id])
         context = {
             'edit_form': edit_form,
             'payment': payment,
@@ -227,45 +300,6 @@ def delete_payment(request, payment_id):
     payment = Payment.objects.get(id=payment_id)
     payment.delete()
     return redirect('payment')
-
-
-
-def course(request):
-    course_list = Course.objects.all()
-    teacher_list = Teacher.objects.all()
-    print("Contenido de POST:", request.POST)
-    if request.method == 'POST':
-        if 'register-form-submit' in request.POST:
-            form = CourseForm(request.POST, prefix='register')
-            print(form.is_valid())
-            if form.is_valid():
-                form.save()
-                return redirect('course')
-        elif 'edit-form-submit' in request.POST:
-            form = CourseForm(request.POST, prefix='edit')
-            if form.is_valid():
-                form.save()
-                return redirect('course')
-    else:
-        initial_values = {
-            'teacher': teacher_list.first(),
-        }
-        register_form = CourseForm(initial=initial_values, prefix='register')
-        edit_form = CourseForm(prefix='edit')
-        context = {
-            'course_list': course_list,
-            'teacher_list': teacher_list,
-            'register_form': register_form,
-            'edit_form': edit_form,
-        }
-        return render(request, 'ncl/course/course.html', context)
-
-
-
-def delete_course(request, course_id):
-    course = Course.objects.get(id=course_id)
-    course.delete()
-    return redirect('course')
 
 
 class InscriptionViews(HttpResponse):
@@ -301,7 +335,7 @@ class InscriptionViews(HttpResponse):
         inscription = Inscription.objects.get(id=inscription_id)
         edit_form = InscriptionForm(instance=inscription)
 
-        url_process = reverse('edit_form_process_inscription', args=[inscription.id])
+        url_process = reverse('edit_form_process__inscription', args=[inscription.id])
         context = {
             'edit_form': edit_form,
             'inscription': inscription,
@@ -324,10 +358,39 @@ def delete_inscription(request, inscription_id):
 class CourseViews(HttpResponse):
     def index(request):
         course_list = Course.objects.all()
+        course_list_card = (
+            Course.objects.annotate(num_teachers=Count('teacher'))
+            .order_by('-num_teachers')[:3]
+        )
         teacher_list = Teacher.objects.all()
+        course_data = [
+        {
+            'title': 'Vacío',
+            'subtitle': None,
+            'color': 'text-red-400',
+        },
+        {
+            'title': 'Vacío',
+            'subtitle': None,
+            'color': 'text-yellow-400',
+        },
+        {
+            'title': 'Vacío',
+            'subtitle': None,
+            'color': 'text-orange-400',
+        },
+        ]
+        for i, course in enumerate(course_list_card):
+            if i >= 3:
+                break
+            teachers = course.teacher.all()
+            course_data[i]['title'] = course.name
+            course_data[i]['subtitle'] = teachers.count()
+        
         context = {
             'course_list': course_list,
             'teacher_list': teacher_list,
+            'course_data': course_data,
         }
         return render(request, 'ncl/course/course.html', context)
     
@@ -352,7 +415,7 @@ class CourseViews(HttpResponse):
         course = Course.objects.get(id=course_id)
         edit_form = CourseForm(instance=course)
 
-        url_process = reverse('edit_form_process_course', args=[course.id])
+        url_process = reverse('edit_form_process__course', args=[course.id])
         context = {
             'edit_form': edit_form,
             'course': course,

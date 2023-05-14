@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
+{% include 'ncl/includes/card.html' with title='Representantes totales' subtitle=representative_list|length data=representative_data %}
+
 <div class="grid fr gap-y-10 content-center justify-items-center">
   <div class="grid grid-cols-2 gap-x-10 w-full">
     <a
@@ -198,7 +200,4 @@
   </tbody>
 </table>
 
-
-
-{% include 'ncl/forms/register_form.html' %}
 {% endblock %}

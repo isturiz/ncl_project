@@ -1,41 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="grid fr gap-y-10 content-center justify-items-center">
-  <div class="grid grid-cols-2 gap-x-10 w-full">
-    <a
-      href="#"
-      class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
-    >
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
-        Estudiantes totales
-      </h5>
-      <p class="font-normal text-gray-400">{{ student_list|length }}</p>
-    </a>
+{% include 'ncl/includes/card.html' with title='Estudiantes totales' subtitle=student_list|length data=student_data %}
 
-    <div
-      class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
-    >
-      <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">
-          Canto
-        </h5>
-        <p class="font-normal text-gray-400">1 estudiantes</p>
-      </a>
-      <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">
-          Piano
-        </h5>
-        <p class="font-normal text-gray-400">2 estudiantes</p>
-      </a>
-      <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
-          Cuatro
-        </h5>
-        <p class="font-normal text-gray-400">1 estudiantes</p>
-      </a>
-    </div>
-  </div>
-</div>
 
 <div class="flex justify-between items-center pb-4 pt-8">
   <div class="flex justify-between items-center gap-2">
@@ -87,7 +53,7 @@
   class="p-4 mb-4 rounded-lg bg-blue-200 hidden changeAlert"
   id="alertUser"
   role="alert"
->
+  >
   <svg
     aria-hidden="true"
     class="flex-shrink-0 w-5 h-5 text-blue-800"
@@ -213,6 +179,4 @@
   </tbody>
 </table>
 
-{% include 'ncl/forms/edit_form.html' %}
-{% include 'ncl/forms/register_form.html' %}
 {% endblock %}

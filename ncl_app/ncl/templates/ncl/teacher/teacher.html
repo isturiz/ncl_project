@@ -1,37 +1,8 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="grid fr gap-y-10 content-center justify-items-center">
-  <div class="grid grid-cols-2 gap-x-10 w-full">
-    <a
-      href="#"
-      class="block h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
-    >
-      <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">
-        Profesores totales
-      </h5>
-      <p class="font-normal text-gray-400">{{ teacher_list|length }}</p>
-    </a>
 
-    <div
-      class="grid grid-cols-3 w-full h-full p-6 border rounded-lg shadow bg-gray-800 border-gray-700 hover:bg-gray-600"
-    >
-      <a href="#1">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-red-400">Canto</h5>
-        <p class="font-normal text-gray-400">1 profesor</p>
-      </a>
-      <a href="#2">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-yellow-400">Piano</h5>
-        <p class="font-normal text-gray-400">2 profesores</p>
-      </a>
-      <a href="#3">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-orange-400">
-          Cuatro
-        </h5>
-        <p class="font-normal text-gray-400">1 profesor</p>
-      </a>
-    </div>
-  </div>
-</div>
+{% include 'ncl/includes/card.html' with title='Profesores totales' subtitle=teacher_list|length data=teacher_data %}
+
 
 <!-- SEARCH AND CREATE NEW USER -->
 <div class="flex justify-between items-center pb-4 pt-8">
@@ -197,7 +168,5 @@
     </tr>
   </tbody>
 </table>
-
-{% include 'ncl/forms/register_form.html' %}
 
 {% endblock %}
