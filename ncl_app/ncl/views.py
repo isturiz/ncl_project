@@ -16,6 +16,10 @@ from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm, Ins
 from .auth_views import *
 
 
+from django.template.loader import render_to_string
+import weasyprint
+from io import BytesIO
+
 def index(request):
     return HttpResponse("Main page")
 
@@ -434,3 +438,37 @@ def delete_course(request, course_id):
     course = Course.objects.get(id=course_id)
     course.delete()
     return redirect('course')
+
+class AnalyticsView(HttpResponse):
+
+    def index(request):
+        representative_list = Representative.objects.all()
+
+        context = {
+            'representative_list': representative_list,
+        }
+        return render(request, 'ncl/analytics/analytics.html', context)
+
+    def generar_pdf(request):
+        # Definir la vista en Django que renderice el contenido del PDF
+        representative_list = Representative.objects.all()
+        context = {
+            'representative_list': representative_list,
+        }
+
+
+        # Utilizar render_to_string para generar el contenido HTML del PDF
+        html_string = render_to_string('ncl/report.html', context)
+
+        # Crear un objeto BytesIO para almacenar el PDF generado
+        pdf_file = BytesIO()
+
+        # Generar el PDF utilizando WeasyPrint
+        weasyprint.HTML(string=html_string).write_pdf(pdf_file)
+
+        # Configurar la respuesta HTTP para devolver el PDF generado
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="tu_reporte.pdf"'
+        response.write(pdf_file.getvalue())
+        return response
+    

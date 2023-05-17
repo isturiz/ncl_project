@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <table class="w-full text-sm text-left text-gray-400" id="table-file">
+    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+      <tr>
+        <th scope="col" class="py-3 px-6">Nombre</th>
+        <th scope="col" class="py-3 px-6">Apellido</th>
+        <th scope="col" class="py-3 px-6">Correo</th>
+        <th scope="col" class="py-3 px-6">Teléfono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if representative_list %} {% for representative in representative_list %}
+  
+      <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+        <td class="py-4 px-6">{{representative.first_name}}</td>
+        <td class="py-4 px-6">{{representative.last_name}}</td>
+        <td class="py-4 px-6">{{representative.email}}</td>
+        <td class="py-4 px-6">{{representative.phone_number}}</td>
+      </tr>
+  
+      {% endfor %} {% else %}
+      <p>No representative are available.</p>
+      {% endif %}
+    </tbody>
+  </table>
+</body>
+</html>

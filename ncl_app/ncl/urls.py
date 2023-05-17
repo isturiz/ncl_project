@@ -10,11 +10,15 @@ from .views import PaymentViews, delete_payment
 from .views import InscriptionViews, delete_inscription
 from .views import CourseViews, delete_course
 from .views import login_view, logout_view
+from .views import AnalyticsView
+
 
 urlpatterns = [
 
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+
+
 
     #ex: ncl/
     path('', home, name='home'),
@@ -72,4 +76,8 @@ urlpatterns = [
     path('course/<int:course_id>/delete/', delete_course, name='delete_course'),
 
     #ex: ncl/inscription
+
+    path('analytics/', AnalyticsView.index, name='analytics'), 
+    path('generar_pdf/', AnalyticsView.generar_pdf, name='generar_pdf'),
+    
 ]
