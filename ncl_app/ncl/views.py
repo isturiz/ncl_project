@@ -468,7 +468,7 @@ class AnalyticsView(HttpResponse):
 
         # Configurar la respuesta HTTP para devolver el PDF generado
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="tu_reporte.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
         response.write(pdf_file.getvalue())
         return response
     
