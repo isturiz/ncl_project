@@ -1,33 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-</head>
-<body>
-  <table class="w-full text-sm text-left text-gray-400" id="table-file">
-    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
-      <tr>
-        <th scope="col" class="py-3 px-6">Nombre</th>
-        <th scope="col" class="py-3 px-6">Apellido</th>
-        <th scope="col" class="py-3 px-6">Correo</th>
-        <th scope="col" class="py-3 px-6">Teléfono</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if representative_list %} {% for representative in representative_list %}
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+
+    <link
+      rel="shortcut icon"
+      href="https://img.icons8.com/fluency-systems-filled/48/FFFFFF/boy.png"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="{% static 'css/report.css' %}"
+      rel="stylesheet"
+    />
+    <style>
+
+      table {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+      }
+      
+      table caption {
+        font-size: 1.5em;
+        margin: .5em 0 .75em;
+      }
+      
+      table tr {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: .35em;
+      }
+      
+      table th,
+      table td {
+        padding: .625em;
+        text-align: center;
+      }
+      
+      table th {
+        font-size: .85em;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+
+      table thead tr th {
+        background-color: #d7d7d7;
+      }
+      header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      main .title {
+        display: flex;
+        justify-content: center;
+        font-size: 1.5em;
+        text-align: center;
+      }
+      main .date p{
+        text-align: right;
+      }
+
+    </style>
+  </head>
+  <body class="bg">
+    <header>
+      <img src="https://img.icons8.com/fluency-systems-filled/48/000000/boy.png" alt="">
+      <h1>NIÑOS CANTORES DE LARA</h1>
+    </header>
+    <main>
+      <div class="title">
+        <p>{{ title }}</p>
+      </div>
+      <div class="date">
+        <p>Fecha: {{ current_date }}</p>
+      </div>
+      <table class="">
+        <thead class="">
+          <tr>
+            <th scope="col" class="">Nombre</th>
+            <th scope="col" class="">Apellido</th>
+            <th scope="col" class="">Correo</th>
+            <th scope="col" class="">Teléfono</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if list %} 
+            {% for representative in list %}
+      
+              <tr class="">
+                <td class="">{{representative.first_name}}</td>
+                <td class="">{{representative.last_name}}</td>
+                <td class="">{{representative.email}}</td>
+                <td class="">{{representative.phone_number}}</td>
+              </tr>
+      
+            {% endfor %}
+          {% else %}
+          <p>No representative are available.</p>
+          {% endif %}
+        </tbody>
+      </table>
+    </main>
   
-      <tr class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-        <td class="py-4 px-6">{{representative.first_name}}</td>
-        <td class="py-4 px-6">{{representative.last_name}}</td>
-        <td class="py-4 px-6">{{representative.email}}</td>
-        <td class="py-4 px-6">{{representative.phone_number}}</td>
-      </tr>
-  
-      {% endfor %} {% else %}
-      <p>No representative are available.</p>
-      {% endif %}
-    </tbody>
-  </table>
 </body>
 </html>

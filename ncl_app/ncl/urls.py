@@ -1,29 +1,16 @@
 from django.urls import path
 
-from .views import home
 
-from .views import StudentViews, delete_student
-from .views import RepresentativeViews, delete_representative
-from .views import TeacherViews, delete_teacher
-from .views import delete_course, delete_course
-from .views import PaymentViews, delete_payment
-from .views import InscriptionViews, delete_inscription
-from .views import CourseViews, delete_course
-from .views import login_view, logout_view
-from .views import AnalyticsView
+from .views import *
 
+
+#app_name = 'ncl_app'
 
 urlpatterns = [
 
-    path('login/', login_view, name='login'),
+    path('', HomePageView.as_view(), name='home'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
-
-
-
-    #ex: ncl/
-    path('', home, name='home'),
-
-    #ex: ncl/student
 
     # Una posible modularización para todos los edit, podría funcionar, en donde item = student or item = teacher
     # path('student/edit/item/<int:item_id>', ItemViews.edit_form, name='edit_form'),
@@ -77,7 +64,8 @@ urlpatterns = [
 
     #ex: ncl/inscription
 
-    path('analytics/', AnalyticsView.index, name='analytics'), 
-    path('generar_pdf/', AnalyticsView.generar_pdf, name='generar_pdf'),
+    path('reports/', ReportsView.index, name='reports'), 
+    path('generar_pdf/', ReportsView.generar_pdf, name='generar_pdf'),
+    path('test_report/', ReportsView.test_report, name='test_report'),
     
 ]

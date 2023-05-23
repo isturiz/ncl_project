@@ -32,16 +32,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 
-    # LOCAL APPS
-    'ncl.apps.NclConfig',
-
-    # DJANGO APPS
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ncl.apps.NclConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -132,10 +130,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = 'ncl_app:home'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = '/'
 
-SESSION_COOKIE_AGE = 3600
+#SESSION_COOKIE_AGE = 3600
 
-LOGIN_TEMPLATE = 'auth/login.html'
+#LOGIN_TEMPLATE = 'registration/loginn.html'

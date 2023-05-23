@@ -77,7 +77,7 @@
         const idType = button.dataset.idType;
         if (id && idType) {
           const deleteLink = document.getElementById("send_confirmation");
-          const url = `/ncl/${idType}/${id}/delete/`;
+          const url = `/${idType}/${id}/delete/`;
           deleteLink.setAttribute("href", url);
         }
       });

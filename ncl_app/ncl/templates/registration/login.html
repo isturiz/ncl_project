@@ -1,10 +1,47 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block content %}
-  <h2>Iniciar sesión</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Iniciar sesión</button>
-  </form>
+{% block auth %}
+
+<section class="bg-gray-800">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-white">
+          <img class="w-8 h-8 mr-2" src="https://img.icons8.com/fluency-systems-filled/48/ffffff/boy.png" alt="logo">
+          Niños Cantores de Lara    
+      </a>
+      <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-700 border-gray-600">
+          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
+                  Iniciar sesión
+              </h1>
+              {% if form.errors %}
+              <p class="block mb-2 text-sm font-medium text-red-500">Tu usuario y contraseña no coinciden. Por favor intenta de nuevo.</p>
+              {% endif %}
+
+              {% if next %}
+                  {% if user.is_authenticated %}
+                  <p class="block mb-2 text-sm font-medium text-red-500">Tu cuenta no tiene acceso a este sitio web. Para proceder,
+                  por favor inicia sesión con una cuenta que tenga acceso.</p>
+                  {% else %}
+                  <p class="block mb-2 text-sm font-medium text-yellow-200">Por favor inicia sesión para ver el sitio web.</p>
+                  {% endif %}
+              {% endif %}
+              <form class="space-y-4 md:space-y-6" method="post" action="{% url 'login' %}">
+              {% csrf_token %}
+                  <div>
+                      <label class="block mb-2 text-sm font-medium text-white">{{ form.username.label_tag }}</label>
+                      {{ form.username }}
+                  </div>
+                  <div>
+                    <label class="block mb-2 text-sm font-medium text-white">{{ form.password.label_tag }}</label>
+                    {{ form.password }}
+                  </div>
+                  <input type="submit" value="Acceder" class="w-full text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-600 focus:ring-blue-700">
+                  <input type="hidden" name="next" value="{{ next }}">
+              </form>
+          </div>
+      </div>
+  </div>
+</section>
+</form>
+
 {% endblock %}

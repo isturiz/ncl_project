@@ -14,22 +14,28 @@ from .models import Inscription
 from .forms import StudentForm, RepresentativeForm, CourseForm, TeacherForm, InscriptionForm, PaymentForm
 
 from .auth_views import *
+from .reports_views import *
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.shortcuts import render, redirect
 
-from django.template.loader import render_to_string
-import weasyprint
-from io import BytesIO
 
 def index(request):
     return HttpResponse("Main page")
 
-def home(request):
-    total_student = Student.objects.count()
-    total_income = Payment.objects.all().aggregate(Sum('amount'))['amount__sum']
-    return render(request, 'ncl/home/home.html', {
+# @login_required
+@method_decorator(login_required, name='dispatch')
+class HomePageView(View):
+    def get(self, request):
+        total_student = Student.objects.count()
+        total_income = Payment.objects.all().aggregate(Sum('amount'))['amount__sum']
+        context = {
         'total_student': total_student,
-        'total_income': total_income
-    })
+        'total_income': total_income,
+    }
+        return render(request, 'ncl/home/home.html', context)
 
 class RepresentativeViews(HttpResponse):
     def index(request):
@@ -439,36 +445,5 @@ def delete_course(request, course_id):
     course.delete()
     return redirect('course')
 
-class AnalyticsView(HttpResponse):
 
-    def index(request):
-        representative_list = Representative.objects.all()
-
-        context = {
-            'representative_list': representative_list,
-        }
-        return render(request, 'ncl/analytics/analytics.html', context)
-
-    def generar_pdf(request):
-        # Definir la vista en Django que renderice el contenido del PDF
-        representative_list = Representative.objects.all()
-        context = {
-            'representative_list': representative_list,
-        }
-
-
-        # Utilizar render_to_string para generar el contenido HTML del PDF
-        html_string = render_to_string('ncl/report.html', context)
-
-        # Crear un objeto BytesIO para almacenar el PDF generado
-        pdf_file = BytesIO()
-
-        # Generar el PDF utilizando WeasyPrint
-        weasyprint.HTML(string=html_string).write_pdf(pdf_file)
-
-        # Configurar la respuesta HTTP para devolver el PDF generado
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="reporte.pdf"'
-        response.write(pdf_file.getvalue())
-        return response
     
