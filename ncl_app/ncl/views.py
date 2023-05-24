@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.db.models import Sum, Count
+from django.contrib import messages
 
 from django.urls import reverse
 
@@ -20,6 +21,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import render, redirect
+
+from .colors import MESSAGE_COLORS
 
 
 def index(request):
@@ -317,15 +320,28 @@ class InscriptionViews(HttpResponse):
         inscription_list = Inscription.objects.all()
         student_list = Student.objects.all()
         course_list = Course.objects.all()
+        # messages.success(request, "Mensaje de éxito")  # Ejemplo de mensaje de éxito
+
+        
+
         context = {
             'inscription_list': inscription_list,
             'student_list': student_list,
             'course_list': course_list,
         }
+
+        # messages.get_messages(request)
+
+        if messages.get_messages(request):
+            context['messages'] = messages.get_messages(request)
+            for message in messages.get_messages(request):
+                message_tags = MESSAGE_COLORS[message.tags]
+            context['message_tags'] = message_tags
+
         return render(request, 'ncl/inscription/inscription.html', context)
     
     def register_form(request):
-        register_form = PaymentForm()
+        register_form = InscriptionForm()
         url_process = 'register_form_process__inscription'
 
         context = {
@@ -337,8 +353,22 @@ class InscriptionViews(HttpResponse):
     
     def register_form_process(request):
         register_form = InscriptionForm(request.POST)
-        if register_form.is_valid():
-            register_form.save()
+        student = register_form.data.get('student')  # Obtener el ID del estudiante del formulario
+
+        # Verificar si el estudiante ya está inscrito
+        existing_inscription = Inscription.objects.filter(student_id=student).exists()
+        if existing_inscription:
+            messages.error(request, "Este estudiante ya está inscrito.")
+        elif register_form.is_valid():
+            inscription = register_form.save(commit=False)
+            inscription.save()
+            inscription.course.set(register_form.cleaned_data['course'])
+            messages.success(request, "Inscripción exitosa.")
+        else:
+            # Manejar el caso de validación del formulario no exitosa
+            # Puedes agregar un mensaje de error general si deseas
+            messages.error(request, "Error en el formulario de inscripción.")
+
         return redirect('inscription')
 
     def edit_form(request, inscription_id):
@@ -402,6 +432,13 @@ class CourseViews(HttpResponse):
             'teacher_list': teacher_list,
             'course_data': course_data,
         }
+
+        # messages.error(request, 'mensaje de prueba')
+        if messages.get_messages(request):
+            context['messages'] = messages.get_messages(request)
+            for message in messages.get_messages(request):
+                message_tags = MESSAGE_COLORS[message.tags]
+            context['message_tags'] = message_tags
         return render(request, 'ncl/course/course.html', context)
     
     def register_form(request):
@@ -417,9 +454,27 @@ class CourseViews(HttpResponse):
     
     def register_form_process(request):
         register_form = CourseForm(request.POST)
-        if register_form.is_valid():
-            register_form.save()
+        name = register_form.data.get('name')  # Obtener el ID del estudiante del formulario
+
+        # Verificar si el estudiante ya está inscrito
+        existing_course = Course.objects.filter(name=name).exists()
+        if existing_course:
+            messages.error(request, "Este curso ya está registrado.")
+        elif register_form.is_valid():
+            course = register_form.save(commit=False)
+            course.save()
+            course.teacher.set(register_form.cleaned_data['teacher'])
+            messages.success(request, "Registro exitoso.")
+        else:
+            messages.error(request, "Error en el formulario de registro.")
+
         return redirect('course')
+
+    # def register_form_process(request):
+    #     register_form = CourseForm(request.POST)
+    #     if register_form.is_valid():
+    #         register_form.save()
+    #     return redirect('course')
 
     def edit_form(request, course_id):
         course = Course.objects.get(id=course_id)

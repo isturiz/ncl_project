@@ -3,39 +3,29 @@
 
 
 <div class="grid grid-cols-4 gap-10">
-  <a href="{% url 'generar_pdf' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
+  <a href="{% url 'generate_pdf' report_type='representative' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
+    <p class="font-normal text-gray-400">Contiene información</p>
   </a>
   
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
+  <a href="{% url 'generate_pdf' report_type='student' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte estudiantes</h5>
+    <p class="font-normal text-gray-400">Contiene información</p>
   </a>
   
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
+  <a href="{% url 'generate_pdf' report_type='course' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte cursos</h5>
+    <p class="font-normal text-gray-400">Contiene información</p>
   </a>
   
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
+  <a href="{% url 'generate_pdf' report_type='inscription' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte inscripciones</h5>
+    <p class="font-normal text-gray-400">Contiene información</p>
   </a>
 
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
-  </a>
-
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
-  </a>
-
-  <a href="#" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte representantes</h5>
-    <p class="font-normal text-gray-400">Contiene información sobre los representantes</p>
+  <a href="{% url 'generate_pdf' report_type='teacher' %}" class="block max-w-sm p-6 border rounded-lg shadow-md bg-gray-800 border-gray-700 hover:bg-gray-700">
+    <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Reporte profesores</h5>
+    <p class="font-normal text-gray-400">Contiene información</p>
   </a>
 </div>
   

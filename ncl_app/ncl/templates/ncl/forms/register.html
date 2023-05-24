@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if form.errors %}
-        <p>error en el formulario</p>
-    {% endif %}
+    
 
     <div class="p-6 space-y-6">     
     <h1 class="block text-lg font-medium text-white">Registro</h1>
 
     <form action="{% url url_process %}" method="POST" class="flex flex-col">
         {% csrf_token %}
-        {% if msg %}
-            <p>Registro exitoso</p>
+        {% if form.errors %}
+            <p>error en el formulario</p>
         {% endif %}
 
             <div class="grid grid-cols-6 gap-6 mb-6">

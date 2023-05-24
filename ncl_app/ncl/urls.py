@@ -65,7 +65,7 @@ urlpatterns = [
     #ex: ncl/inscription
 
     path('reports/', ReportsView.index, name='reports'), 
-    path('generar_pdf/', ReportsView.generar_pdf, name='generar_pdf'),
-    path('test_report/', ReportsView.test_report, name='test_report'),
+    path('generate_pdf/<str:report_type>/', ReportsView.generate_pdf, name='generate_pdf'),
+    path('test_report/<str:report_type>/', ReportsView.test_report, name='test_report'),
     
 ]

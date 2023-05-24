@@ -87,30 +87,90 @@
       <table class="">
         <thead class="">
           <tr>
-            <th scope="col" class="">Nombre</th>
-            <th scope="col" class="">Apellido</th>
-            <th scope="col" class="">Correo</th>
-            <th scope="col" class="">Teléfono</th>
+            {% for th in properties.th%}
+              <th scope="col" class="">{{ th }}</th>
+            {% endfor %}
           </tr>
         </thead>
         <tbody>
-          {% if list %} 
-            {% for representative in list %}
-      
-              <tr class="">
-                <td class="">{{representative.first_name}}</td>
-                <td class="">{{representative.last_name}}</td>
-                <td class="">{{representative.email}}</td>
-                <td class="">{{representative.phone_number}}</td>
+          {% if report_type == "representative" %}
+            {% for element in list %}
+              <tr>
+                <td>{{ element.first_name }}</td>
+                <td>{{ element.last_name }}</td>
+                <td>{{ element.email }}</td>
               </tr>
-      
             {% endfor %}
-          {% else %}
-          <p>No representative are available.</p>
+
+          {% elif report_type == "student" %}
+            {% for element in list %}
+              <tr>
+                <td>{{ element.first_name }}</td>
+                <td>{{ element.last_name }}</td>
+                <td>{{ element.age_category }}</td>
+                <td>{{ element.representative }}</td>
+                {% comment %} <td>{{ element.id }}</td> {% endcomment %}
+
+
+
+                {% comment %} <td>
+                  {% for course in courses %}
+                    {{ course.name }}
+                  {% else %}
+                    No hay cursos inscritos.
+                  {% endfor %}
+                </td> {% endcomment %}
+              </tr>
+            {% endfor %}
+
+          {% elif report_type == "inscription" %}
+            {% for element in list %}
+              <tr>
+                <td>{{ element.student }}</td>
+                <td>
+                  {% for course in element.course.all %} {{ course.name }} {% if not forloop.last %}, {% endif %} {% endfor%}
+                </td>
+              </tr>
+            {% endfor %}
+      
+          {% elif report_type == "course" %}
+
+              {% for course in list %}
+              <tr>
+                <td>{{ course.name }}</td>
+                <td>
+                  {% for teacher in course.teacher.all %}
+                  {{ teacher.first_name }} {{ teacher.last_name }}<br>
+                  {% endfor %}
+                </td>
+                <td>
+                  {% for inscription in course.inscription_set.all %}
+                  {{ inscription.student.first_name }} {{ inscription.student.last_name }}<br>
+                  {% endfor %}
+                </td>
+              </tr>
+              {% endfor %}
+
+          {% elif report_type == "teacher" %}
+
+            {% for teacher in teachers %}
+              <tr>
+                <td>{{ teacher.first_name }} {{ teacher.last_name }}</td>
+                <td>
+                    {% if teacher.course_set.all %}
+                      {{ teacher.course_set.all|join:", " }}
+                    {% else %}
+                      No hay cursos asignados
+                    {% endif %}
+                </td>
+                <td>{{ teacher.num_students }}</td>
+              </tr>
+            {% endfor %}
+        
+
           {% endif %}
+          
         </tbody>
-      </table>
     </main>
-  
 </body>
 </html>

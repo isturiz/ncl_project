@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class Representative(models.Model):
     first_name = models.CharField(max_length=50)
@@ -60,8 +61,11 @@ class Payment(models.Model):
         return f"{self.student.first_name} {self.student.last_name} - {self.amount}"
 
 class Inscription(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, unique=True)
     course = models.ManyToManyField(Course)
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.course.name}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
